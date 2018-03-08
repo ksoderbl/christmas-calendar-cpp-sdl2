@@ -748,7 +748,31 @@ static void effect6_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_z:
 		rot[2] -= 10.0;
 		break;
+	case SDLK_PAGEUP:
+		my_z -= 5.0;
+		if (my_z <= 0.0)
+			my_z = 0.0;
 
+		break;
+	case SDLK_PAGEDOWN:
+		my_z += 5.0;
+		if (my_z >= 2.2*MY_Z0)
+			my_z = 2.2*MY_Z0;
+
+		break;
+	case SDLK_LEFT:
+		rot[1] -= 10.0;
+		break;
+	case SDLK_RIGHT:
+		rot[1] += 10.0;
+		break;
+	case SDLK_UP:
+		rot[0] -= 10.0;
+		break;
+	case SDLK_DOWN:
+		rot[0] += 10.0;
+		break;
+		
 	case SDLK_ESCAPE:
 		return_to_calendar();
 		break;
@@ -757,43 +781,6 @@ static void effect6_keyboard_cb(SDL_KeyboardEvent key)
 	}
 
 }
-
-//TODO
-/*
-void effect6_special_cb(int key, int x, int y)
-{
-	x=x;y=y;
-	switch (key) {
-	case GLUT_KEY_PAGE_UP:
-		my_z -= 5.0;
-		if (my_z <= 0.0)
-			my_z = 0.0;
-
-		break;
-	case GLUT_KEY_PAGE_DOWN:
-		my_z += 5.0;
-		if (my_z >= 2.2*MY_Z0)
-			my_z = 2.2*MY_Z0;
-
-		break;
-	case GLUT_KEY_LEFT:
-		rot[1] -= 10.0;
-		break;
-	case GLUT_KEY_RIGHT:
-		rot[1] += 10.0;
-		break;
-	case GLUT_KEY_UP:
-		rot[0] -= 10.0;
-		break;
-	case GLUT_KEY_DOWN:
-		rot[0] += 10.0;
-		break;
-	default:
-		break;
-	}
-}
-*/
-
 
 
 int effect6_init_cb(struct effect *ep)

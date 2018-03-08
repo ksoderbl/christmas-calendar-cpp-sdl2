@@ -409,40 +409,6 @@ static void darkness(void)
 
 /* ---------------------------------------------------------------------- */
 
-
-
-void makeTexture(GLubyte *texture, int w, int h, int d, int j)
-{
-	int xmul = WIDTH / w;
-	int ymul = HEIGHT / h;
-	int x, y;
-	int ind = 0;
-	GLubyte r, g, b;
-	GLubyte *tex = texture;
-	
-	for (y = 0; y < h; y++) {
-		for (x = 0; x < w; x++) {
-			//r = (x + j) & 0xff;
-			//g = (y + j) & 0xff;
-			//b = (x + y + j) & 0xff;
-			
-			r = (x * xmul + j) & 0xff;
-			g = (y * ymul + j) & 0xff;
-			b = (2 * x * xmul + 3 * y * ymul + j) & 0xff;
-			
-			tex[ind++] = r;
-			tex[ind++] = g;
-			tex[ind++] = b;
-		}
-	}
-	
-	tex = texture;
-	//r = [((i+j) & 0xff) for i in range(w * h * d)]
-	for (ind = 0; ind < w * h * d; ind++) {
-		tex[ind] = (ind + j) & 0xff;
-	}
-}
-
 void main_loop(void)
 {
 	bool loop = true;

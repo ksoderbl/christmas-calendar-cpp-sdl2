@@ -362,59 +362,10 @@ static void effect17_motion_cb(SDL_MouseMotionEvent motion)
 }
 
 
-#if 0
-static void effect17_mouse_cb(int button, int state, int x, int y)
-{
-
-}
-#endif
-
-// TODO
-/*
-void effect17_special_cb(int key, int x, int y)
-{
-	int i;
-	x=x;y=y;
-	switch (key) {
-	case GLUT_KEY_END:
-		theta = 0.0;
-		break;
-	case GLUT_KEY_PAGE_UP:
-		theta += (M_PI/30.0);
-		break;
-	case GLUT_KEY_PAGE_DOWN:
-		theta -= (M_PI/30.0);
-		break;
-	case GLUT_KEY_LEFT:
-		phi += 0.1;
-		break;
-	case GLUT_KEY_RIGHT:
-		phi -= 0.1;
-		break;
-	case GLUT_KEY_UP:
-		for (i = 0; i < 3; i++)
-			pos[i] += 0.2 * dir[i];
-		break;
-	case GLUT_KEY_DOWN:
-		for (i = 0; i < 3; i++)
-			pos[i] -= 0.2 * dir[i];
-		break;
-	default:
-		break;
-	}
-
-	if (theta >= (0.99*M_PI/2.0))
-		theta = (0.99*M_PI/2.0);
-	if (theta <= -(0.99*M_PI/2.0))
-		theta = -(0.99*M_PI/2.0);
-	
-	if (pos[2] < 1.0)
-		pos[2] = 1.0;
-}
-*/
-
 static void effect17_keyboard_cb(SDL_KeyboardEvent key)
 {
+	int i;
+  
 	switch (key.keysym.sym) {
 	case SDLK_1:
 		light0_on = !light0_on;
@@ -446,9 +397,40 @@ static void effect17_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_ESCAPE:
 		return_to_calendar();
 		break;
+	case SDLK_END:
+		theta = 0.0;
+		break;
+	case SDLK_PAGEUP:
+		theta += (M_PI/30.0);
+		break;
+	case SDLK_PAGEDOWN:
+		theta -= (M_PI/30.0);
+		break;
+	case SDLK_LEFT:
+		phi += 0.1;
+		break;
+	case SDLK_RIGHT:
+		phi -= 0.1;
+		break;
+	case SDLK_UP:
+		for (i = 0; i < 3; i++)
+			pos[i] += 0.2 * dir[i];
+		break;
+	case SDLK_DOWN:
+		for (i = 0; i < 3; i++)
+			pos[i] -= 0.2 * dir[i];
+		break;
 	default:
 		break;
 	}
+
+	if (theta >= (0.99*M_PI/2.0))
+		theta = (0.99*M_PI/2.0);
+	if (theta <= -(0.99*M_PI/2.0))
+		theta = -(0.99*M_PI/2.0);
+	
+	if (pos[2] < 1.0)
+		pos[2] = 1.0;
 
 }
 

@@ -377,38 +377,6 @@ static void effect3_reshape_cb(int w, int h)
 	gluPerspective(60.0, (GLdouble)w/(GLdouble)h, 0.1, 1000.0);
 }
 
-// TODO
-/*
-static void effect3_special_cb(int key, int x, int y)
-{
-	x=x;y=y;
-	switch (key) {
-	case GLUT_KEY_PAGE_UP:
-		my_z -= 0.5;
-		if (my_z <= 1.0)
-			my_z = 1.0;
-		break;
-	case GLUT_KEY_PAGE_DOWN:
-		my_z += 0.5;
-		break;
-	case GLUT_KEY_LEFT:
-		w[1] -= 0.1;
-		break;
-	case GLUT_KEY_RIGHT:
-		w[1] += 0.1;
-		break;
-	case GLUT_KEY_UP:
-		w[0] -= 0.1;
-		break;
-	case GLUT_KEY_DOWN:
-		w[0] += 0.1;
-		break;
-	default:
-		break;
-	}
-}
-*/
-
 
 static void effect3_keyboard_cb(SDL_KeyboardEvent key)
 {
@@ -432,7 +400,27 @@ static void effect3_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_z:
 		w[2] -= 0.1;
 		break;
-
+	case SDLK_PAGEUP:
+		my_z -= 0.5;
+		if (my_z <= 1.0)
+			my_z = 1.0;
+		break;
+	case SDLK_PAGEDOWN:
+		my_z += 0.5;
+		break;
+	case SDLK_LEFT:
+		w[1] -= 0.1;
+		break;
+	case SDLK_RIGHT:
+		w[1] += 0.1;
+		break;
+	case SDLK_UP:
+		w[0] -= 0.1;
+		break;
+	case SDLK_DOWN:
+		w[0] += 0.1;
+		break;
+		
 	case SDLK_ESCAPE:
 		return_to_calendar();
 		break;

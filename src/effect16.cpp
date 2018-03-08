@@ -192,46 +192,33 @@ static void effect16_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_ESCAPE:
 		return_to_calendar();
 		break;
-	default:
-		break;
-	}
-
-}
-
-//TODO
-/*
-void effect16_special_cb(int key, int x, int y)
-{
-	x=x;y=y;
-	switch (key) {
-	case GLUT_KEY_PAGE_UP:
+	case SDLK_PAGEUP:
 		my_z -= 2.0;
 		if (my_z <= 0.0)
 			my_z = 0.0;
 		break;
-	case GLUT_KEY_PAGE_DOWN:
+	case SDLK_PAGEDOWN:
 		my_z += 2.0;
 		if (my_z >= STARS_MINDIST)
 			my_z = STARS_MINDIST;
 		break;
-	case GLUT_KEY_LEFT:
+	case SDLK_LEFT:
 		w[1] -= 0.1;
 		break;
-	case GLUT_KEY_RIGHT:
+	case SDLK_RIGHT:
 		w[1] += 0.1;
 		break;
-	case GLUT_KEY_UP:
+	case SDLK_UP:
 		w[0] -= 0.1;
 		break;
-	case GLUT_KEY_DOWN:
+	case SDLK_DOWN:
 		w[0] += 0.1;
 		break;
 	default:
 		break;
 	}
-}
-*/
 
+}
 
 
 int effect16_init_cb(struct effect *ep)

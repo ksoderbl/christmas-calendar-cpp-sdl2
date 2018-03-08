@@ -440,45 +440,30 @@ static void effect14_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_ESCAPE:
 		return_to_calendar();
 		break;
-	default:
-		break;
-	}
-
-
-}
-
-
-// TODO
-/*
-static void effect14_special_cb(int key, int x, int y)
-{
-	x=x;y=y;
-	switch (key) {
-	case GLUT_KEY_PAGE_UP:
+	case SDLK_PAGEUP:
 		myz -= 0.5;
 		if (myz <= 0.0)
 			myz = 0.0;
 		break;
-	case GLUT_KEY_PAGE_DOWN:
+	case SDLK_PAGEDOWN:
 		myz += 0.5;
 		break;
-	case GLUT_KEY_LEFT:
+	case SDLK_LEFT:
 		w[1] -= 0.1;
 		break;
-	case GLUT_KEY_RIGHT:
+	case SDLK_RIGHT:
 		w[1] += 0.1;
 		break;
-	case GLUT_KEY_UP:
+	case SDLK_UP:
 		w[0] -= 0.1;
 		break;
-	case GLUT_KEY_DOWN:
+	case SDLK_DOWN:
 		w[0] += 0.1;
 		break;
 	default:
 		break;
 	}
 }
-*/
 
 
 static int init_textures(void)

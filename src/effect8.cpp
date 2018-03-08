@@ -231,7 +231,27 @@ static void effect8_keyboard_cb(SDL_KeyboardEvent key)
 		x_fovy -= 1.0;
 		/*w[2] -= 0.1;*/
 		break;
-
+	case SDLK_PAGEUP:
+		my_z -= 1.0;
+		if (my_z <= 0.0)
+			my_z = 0.0;
+		break;
+	case SDLK_PAGEDOWN:
+		my_z += 1.0;
+		break;
+	case SDLK_LEFT:
+		w[1] -= 0.1;
+		break;
+	case SDLK_RIGHT:
+		w[1] += 0.1;
+		break;
+	case SDLK_UP:
+		w[0] -= 0.1;
+		break;
+	case SDLK_DOWN:
+		w[0] += 0.1;
+		break;
+		
 	case SDLK_ESCAPE:
 		return_to_calendar();
 		break;
@@ -240,39 +260,6 @@ static void effect8_keyboard_cb(SDL_KeyboardEvent key)
 	}
 
 }
-
-//TODO
-/*
-void effect8_special_cb(int key, int x, int y)
-{
-	x=x;y=y;
-	switch (key) {
-	case GLUT_KEY_PAGE_UP:
-		my_z -= 1.0;
-		if (my_z <= 0.0)
-			my_z = 0.0;
-		break;
-	case GLUT_KEY_PAGE_DOWN:
-		my_z += 1.0;
-		break;
-	case GLUT_KEY_LEFT:
-		w[1] -= 0.1;
-		break;
-	case GLUT_KEY_RIGHT:
-		w[1] += 0.1;
-		break;
-	case GLUT_KEY_UP:
-		w[0] -= 0.1;
-		break;
-	case GLUT_KEY_DOWN:
-		w[0] += 0.1;
-		break;
-	default:
-		break;
-	}
-}
-*/
-
 
 
 int effect8_init_cb(struct effect *ep)

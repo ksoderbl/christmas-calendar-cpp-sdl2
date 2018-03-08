@@ -673,6 +673,8 @@ static void calendar_mouse_cb(SDL_MouseButtonEvent button)
 
 static void calendar_keyboard_cb(SDL_KeyboardEvent key)
 {
+	int i, effect = 0;
+  
 	switch (key.keysym.sym) {
 	case SDLK_l:
 		use_lighting = !use_lighting;
@@ -701,61 +703,49 @@ static void calendar_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_ESCAPE:
 		quit_request();
 		break;
-	default:
-		break;
-	}
 
-	mainPostRedisplay();
-}
+	case SDLK_F1:  effect = 1;  break;
+	case SDLK_F2:  effect = 2;  break;
+	case SDLK_F3:  effect = 3;  break;
+	case SDLK_F4:  effect = 4;  break;
+	case SDLK_F5:  effect = 5;  break;
+	case SDLK_F6:  effect = 6;  break;
+	case SDLK_F7:  effect = 7;  break;
+	case SDLK_F8:  effect = 8;  break;
+	case SDLK_F9:  effect = 9;  break;
+	case SDLK_F10: effect = 10; break;
+	case SDLK_F11: effect = 11; break;
+	case SDLK_F12: effect = 12; break;
 
-// TODO
-/*
-static void calendar_special_cb(int key, int x, int y)
-{
-	int i, effect = 0, modifiers;
-	x=x; y=y;
-
-	switch (key) {
-	case GLUT_KEY_F1:  effect = 1;  break;
-	case GLUT_KEY_F2:  effect = 2;  break;
-	case GLUT_KEY_F3:  effect = 3;  break;
-	case GLUT_KEY_F4:  effect = 4;  break;
-	case GLUT_KEY_F5:  effect = 5;  break;
-	case GLUT_KEY_F6:  effect = 6;  break;
-	case GLUT_KEY_F7:  effect = 7;  break;
-	case GLUT_KEY_F8:  effect = 8;  break;
-	case GLUT_KEY_F9:  effect = 9;  break;
-	case GLUT_KEY_F10: effect = 10; break;
-	case GLUT_KEY_F11: effect = 11; break;
-	case GLUT_KEY_F12: effect = 12; break;
-
-	case GLUT_KEY_END:
+	case SDLK_END:
 		theta = 0.0;
 		break;
-	case GLUT_KEY_PAGE_UP:
+	case SDLK_PAGEUP:
 		theta += (M_PI/30.0);
 		break;
-	case GLUT_KEY_PAGE_DOWN:
+	case SDLK_PAGEDOWN:
 		theta -= (M_PI/30.0);
 		break;
-	case GLUT_KEY_LEFT:
+	case SDLK_LEFT:
 		phi += 0.1;
 		break;
-	case GLUT_KEY_RIGHT:
+	case SDLK_RIGHT:
 		phi -= 0.1;
 		break;
-	case GLUT_KEY_UP:
+	case SDLK_UP:
 		for (i = 0; i < 3; i++)
 			pos[i] += 0.2 * fwd[i];
 		break;
-	case GLUT_KEY_DOWN:
+	case SDLK_DOWN:
 		for (i = 0; i < 3; i++)
 			pos[i] -= 0.2 * fwd[i];
 		break;
+	  
 	default:
 		break;
 	}
 
+	
 	if (theta >= (M_PI/2.0))
 		theta = (M_PI/2.0);
 	if (theta <= -(M_PI/2.0))
@@ -767,8 +757,10 @@ static void calendar_special_cb(int key, int x, int y)
 	
 	if (effect != 0) {
 		int index;
-		modifiers = mainGetModifiers();
-		if (modifiers & GLUT_ACTIVE_SHIFT)
+		Uint16 modifiers;
+		
+		modifiers = key.keysym.mod;
+		if (modifiers & KMOD_SHIFT)
 			effect += 12;
 		index = get_index(effect);
 		run_effect(index);
@@ -777,10 +769,9 @@ static void calendar_special_cb(int key, int x, int y)
 		main_run_effect(effect);
 #endif
 	}
-
+	
 	mainPostRedisplay();
 }
-*/
 
 /* ---------------------------------------------------------------------- */
 

@@ -482,58 +482,11 @@ static void effect24_motion_cb(SDL_MouseMotionEvent motion)
 	oldy = y;
 }
 
-// TODO
-/*
-void effect24_special_cb(int key, int x, int y)
-{
-	int i;
-	x=x;y=y;
-	switch (key) {
-	case GLUT_KEY_END:
-		theta = 0.0;
-		break;
-	case GLUT_KEY_PAGE_UP:
-		theta += (M_PI/30.0);
-		break;
-	case GLUT_KEY_PAGE_DOWN:
-		theta -= (M_PI/30.0);
-		break;
-	case GLUT_KEY_LEFT:
-		phi += 0.1;
-		break;
-	case GLUT_KEY_RIGHT:
-		phi -= 0.1;
-		break;
-	case GLUT_KEY_UP:
-		for (i = 0; i < 3; i++)
-			pos[i] += 0.2 * fwd[i];
-		break;
-	case GLUT_KEY_DOWN:
-		for (i = 0; i < 3; i++)
-			pos[i] -= 0.2 * fwd[i];
-		break;
-	default:
-		break;
-	}
-
-	if (theta >= (M_PI/2.0))
-		theta = (M_PI/2.0);
-	if (theta <= -(M_PI/2.0))
-		theta = -(M_PI/2.0);
-	if (phi > 2*M_PI)
-		phi -= 2*M_PI;
-	if (phi < 0)
-		phi += 2*M_PI;
-	
-#if 0
-	if (pos[2] < 1.0)
-		pos[2] = 1.0;
-#endif
-}
-*/
 
 static void effect24_keyboard_cb(SDL_KeyboardEvent key)
 {
+	int i;
+	
 	switch (key.keysym.sym) {
 	case SDLK_l:
 		use_lighting = !use_lighting;
@@ -564,7 +517,30 @@ static void effect24_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_t:
 		use_texture = !use_texture;
 		break;
-
+	case SDLK_END:
+		theta = 0.0;
+		break;
+	case SDLK_PAGEUP:
+		theta += (M_PI/30.0);
+		break;
+	case SDLK_PAGEDOWN:
+		theta -= (M_PI/30.0);
+		break;
+	case SDLK_LEFT:
+		phi += 0.1;
+		break;
+	case SDLK_RIGHT:
+		phi -= 0.1;
+		break;
+	case SDLK_UP:
+		for (i = 0; i < 3; i++)
+			pos[i] += 0.2 * fwd[i];
+		break;
+	case SDLK_DOWN:
+		for (i = 0; i < 3; i++)
+			pos[i] -= 0.2 * fwd[i];
+		break;
+		
 	case SDLK_ESCAPE:
 		return_to_calendar();
 		break;
@@ -572,6 +548,19 @@ static void effect24_keyboard_cb(SDL_KeyboardEvent key)
 		break;
 	}
 
+	if (theta >= (M_PI/2.0))
+		theta = (M_PI/2.0);
+	if (theta <= -(M_PI/2.0))
+		theta = -(M_PI/2.0);
+	if (phi > 2*M_PI)
+		phi -= 2*M_PI;
+	if (phi < 0)
+		phi += 2*M_PI;
+	
+#if 0
+	if (pos[2] < 1.0)
+		pos[2] = 1.0;
+#endif
 }
 
 static void quadric_error(GLenum error)
