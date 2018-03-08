@@ -146,10 +146,6 @@ static void effect22_display_cb(void)
 		messages_print(s, frame_count, fontcolor);
 	}
 
-
-	mainPostRedisplay();
-	mainSwapBuffers();
-
 	/* activate pause if requested */
 	if (pause_is_requested())
 		pause_activate();

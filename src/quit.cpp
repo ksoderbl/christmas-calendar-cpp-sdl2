@@ -83,7 +83,6 @@ static void quit_keyboard_cb(SDL_KeyboardEvent key)
 	default:
 		break;
 	}
-	mainPostRedisplay();
 }
 
 void quit_request(void)
@@ -91,5 +90,4 @@ void quit_request(void)
 	cout << quit_message << "\n";
 	quitting = 1;
 	mainKeyboardFunc(quit_keyboard_cb);
-	mainPostRedisplay();
 }

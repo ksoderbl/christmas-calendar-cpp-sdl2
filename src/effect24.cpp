@@ -404,8 +404,6 @@ static void effect24_display_cb(void)
 		messages_print(s, frame_count, fontcolor);
 	}
 
-	mainSwapBuffers();
-
 	/* rotate around sun */
 	alpha += ALPHA_INC;
 	if (alpha > 2.0*M_PI)

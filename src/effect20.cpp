@@ -483,8 +483,6 @@ static void effect20_display_cb(void)
 		messages_print(s, frame_count, fontcolor);
 	}
 
-	mainSwapBuffers();
-
 	/* activate pause if requested */
 	if (pause_is_requested())
 		pause_activate();

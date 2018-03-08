@@ -41,14 +41,6 @@ void mainMouseFunc(effect_mouse_func func)
 {
 	mouseFunc = func;
 }
-void mainSwapBuffers(void)
-{
-	SDL_GL_SwapWindow(window);
-}
-void mainPostRedisplay(void)
-{
-	; //SDL_GL_SwapWindow(window);
-}
 
 
 /* ---------------------------------------------------------------------- */
@@ -57,8 +49,8 @@ void mainPostRedisplay(void)
 static void main_reshape_cb(int w, int h);
 static void main_display_cb(void);
 static void main_idle_cb(void);
-static void darkness(void);
-static void flash(void);
+static void main_darkness(void);
+static void main_flash(void);
 
 int dummy=0; /* don't change, see main.h */
 
@@ -133,27 +125,10 @@ const int S_XPOS = SDL_WINDOWPOS_UNDEFINED;
 const int S_YPOS = SDL_WINDOWPOS_UNDEFINED;
 const string S_APPNAME = "Christmas Calendar in C++ and SDL2";
 
-const int WIDTH = S_WIDTH;
-const int HEIGHT = S_HEIGHT;
-const int FPS = 60;
-	
-// number of pixels in texture
-const int TWIDTH = 64;
-const int THEIGHT = 16;
-const int TBPP = 3;  // bytes per pixel
-const bool SMOOTH_PIXELS=true;
-
 int init_sdl(void)
 {
 	int val;
 	
-	//mainInit(&argc, argv);
-	//mainInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-	//mainInitWindowSize(S_WIDTH, S_HEIGHT);
-	//mainInitWindowPosition(S_XPOS, S_YPOS);
-	//mainCreateWindow(S_APPNAME);
-	
-	//if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) != 0) {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         cerr << "SDL_Init failed: " << SDL_GetError() << endl;
 		exit(1);
@@ -226,8 +201,7 @@ void main_run_effect(int ei)
 		return;
 	}
 
-	darkness();
-	mainPostRedisplay();
+	main_darkness();
 	
 	/* deallocate previous effect */
 	if (next_effect == -1)
@@ -265,7 +239,7 @@ void main_run_effect(int ei)
 
 	next_effect = ei;
 	
-	flash();
+	main_flash();
 }
 
 void main_set_callbacks(struct effect *ep, int w, int h)
@@ -286,7 +260,6 @@ void main_set_callbacks(struct effect *ep, int w, int h)
 	if (w != -1) {
 		(ep->e_reshape)(w, h);
 	}
-	mainPostRedisplay();
 }
 
 /* 
@@ -307,9 +280,6 @@ static void run_next_effect(void)
 
 	/* set the callback, activating the new effect */
 	main_set_callbacks(ep, -1, -1);
-
-	/* make sure we display the stuff */
-	mainPostRedisplay();
 }
 
 
@@ -326,7 +296,7 @@ static void flash_display_cb(void);
 /* clear color */
 static GLdouble cc;
 
-static void flash(void)
+static void main_flash(void)
 {
 	displayFunc = flash_display_cb;
 	idleFunc = main_idle_cb;
@@ -394,11 +364,10 @@ static void main_idle_cb(void)
 		main_run_effect(0);
 		main_run = 1;
 	}
-	mainPostRedisplay();
 }
 
 
-static void darkness(void)
+static void main_darkness(void)
 {
 	displayFunc = main_display_cb;
 	reshapeFunc = main_reshape_cb;
@@ -412,17 +381,6 @@ static void darkness(void)
 void main_loop(void)
 {
 	bool loop = true;
-	//GLubyte texture[THEIGHT][TWIDTH][3];
-	//GLubyte *texture;
-	//GLuint texname = 0;
-	
-	//texture = (GLubyte *) malloc ( THEIGHT * TWIDTH * 3 );
-	// assume allocation worked
-
-	//glClearColor(0.0, 0.0, 0.5, 0.0);
-	//glColor3f(1.0, 1.0, 1.0);
-	//glOrtho(0.0, WIDTH, 0.0, HEIGHT, -1.0, 1.0);
-	//int j = 0;
 
 	while (loop)
 	{
@@ -435,36 +393,7 @@ void main_loop(void)
 			else if (event.type == SDL_KEYDOWN)
 			{
 				if (keyboardFunc)
-					(*keyboardFunc)(event.key /*.keysym.sym*/);
-				
-				/*
-				switch (event.key.keysym.sym)
-				{
-				case SDLK_ESCAPE:
-					loop = false;
-					break;
-				case SDLK_r:
-					// Cover with red and update
-					glClearColor(1.0, 0.0, 0.0, 1.0);
-					glClear(GL_COLOR_BUFFER_BIT);
-					SDL_GL_SwapWindow(window);
-					break;
-				case SDLK_g:
-					// Cover with green and update
-					glClearColor(0.0, 1.0, 0.0, 1.0);
-					glClear(GL_COLOR_BUFFER_BIT);
-					SDL_GL_SwapWindow(window);
-					break;
-				case SDLK_b:
-					// Cover with blue and update
-					glClearColor(0.0, 0.0, 1.0, 1.0);
-					glClear(GL_COLOR_BUFFER_BIT);
-					SDL_GL_SwapWindow(window);
-					break;
-				default:
-					break;
-				}
-				*/
+					(*keyboardFunc)(event.key);
 			}
 
 			else if (event.type == SDL_MOUSEBUTTONDOWN)

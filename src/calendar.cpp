@@ -562,7 +562,6 @@ static void calendar_idle_cb(void)
 			}
 		}
 	}
-	mainPostRedisplay();
 }
 
 
@@ -621,9 +620,6 @@ static void calendar_display_cb(void)
 	if (quit_is_requested())
 		quit_message_print();
 
-	mainSwapBuffers();
-	mainPostRedisplay();
-
 	/* activate pause if requested */
 	if (pause_is_requested())
 		pause_activate();
@@ -647,8 +643,6 @@ static void calendar_reshape_cb(int w, int h)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(s.s_fovy, s.s_aspect, s.s_near, s.s_far);
-
-	mainPostRedisplay();
 }
 
 
@@ -769,8 +763,6 @@ static void calendar_keyboard_cb(SDL_KeyboardEvent key)
 		main_run_effect(effect);
 #endif
 	}
-	
-	mainPostRedisplay();
 }
 
 /* ---------------------------------------------------------------------- */
@@ -984,7 +976,7 @@ static int calendar_init_cb(struct effect *ep)
 	calendar_init_objects();
 	calendar_init_hatches();
 	calendar_init_lights();
-	/*mainPostRedisplay();*/
+
 	frame_count = 0;
 	return 0;
 }
