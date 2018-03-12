@@ -59,7 +59,7 @@ void messages_print(char *s, int count, GLfloat fontcolor[3])
 	GLint msgx, msgy;
 	//void *font = GLUT_BITMAP_HELVETICA_18;
 	void *font = 0;
-	string ename = current_effect->e_name;
+	string ename = "TODO"; //current_effect->e_name;
 	int len=0;
 	static double fps = 0.0;
 

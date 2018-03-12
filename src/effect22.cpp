@@ -171,12 +171,6 @@ static void effect22_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_SPACE:
 		object = (object + 1) % NUMOBJECTS;
 		break;
-	case SDLK_m:
-		messages_toggle();
-		break;
-	case SDLK_p:
-		pause_request();
-		break;
 	case SDLK_r:
 		effect22_reset();
 		break;
@@ -205,9 +199,6 @@ static void effect22_keyboard_cb(SDL_KeyboardEvent key)
 		break;
 	case SDLK_DOWN:
 		w[0] += 0.1;
-		break;
-	case SDLK_ESCAPE:
-		return_to_calendar();
 		break;
 	default:
 		break;

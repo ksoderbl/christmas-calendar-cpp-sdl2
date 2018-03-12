@@ -377,13 +377,6 @@ static void effect17_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_b:
 		blend = !blend;
 		break;
-	case SDLK_s: /* status */
-	case SDLK_m:
-		messages_toggle();
-		break;
-	case SDLK_p:
-		pause_request();
-		break;
 	case SDLK_r:
 		reset();
 		break;
@@ -392,9 +385,6 @@ static void effect17_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_z:
 		break;
 
-	case SDLK_ESCAPE:
-		return_to_calendar();
-		break;
 	case SDLK_END:
 		theta = 0.0;
 		break;

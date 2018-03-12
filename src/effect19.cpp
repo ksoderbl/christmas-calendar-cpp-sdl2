@@ -80,26 +80,6 @@ static void effect19_reshape_cb(int w, int h)
 	gluPerspective(50.0, (GLdouble)w/(GLdouble)h, 0.1, 1000.0);
 }
 
-static void effect19_keyboard_cb(SDL_KeyboardEvent key)
-{
-	switch (key.keysym.sym) {
-	case SDLK_s: /* status */
-	case SDLK_m:
-		messages_toggle();
-		break;
-	case SDLK_p:
-		pause_request();
-		break;
-
-	case SDLK_ESCAPE:
-		return_to_calendar();
-		break;
-	default:
-		break;
-	}
-
-}
-
 int Effect19::init()
 {
 	glBlendFunc(GL_ONE, GL_ONE);
@@ -117,7 +97,6 @@ int effect19_register(struct effect *ep)
 {
 	ep->e_display  = effect19_display_cb;
 	ep->e_reshape  = effect19_reshape_cb;
-	ep->e_keyboard = effect19_keyboard_cb;
 
 	ep->e_name     = effect19_name;
 	return 0;

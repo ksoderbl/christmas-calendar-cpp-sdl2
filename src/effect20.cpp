@@ -551,14 +551,8 @@ static void effect20_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_3:
 		light2_on = !light2_on;
 		break;
-	case SDLK_m:
-		messages_toggle();
-		break;
 	case SDLK_s:
 		use_specular = !use_specular;
-		break;
-	case SDLK_p:
-		pause_request();
 		break;
 	case SDLK_r:
 		reset();
@@ -568,9 +562,6 @@ static void effect20_keyboard_cb(SDL_KeyboardEvent key)
 		use_texture = !use_texture;
 		break;
 #endif
-	case SDLK_ESCAPE:
-		return_to_calendar();
-		break;
 	case SDLK_END:
 		theta = 0.0;
 		break;

@@ -80,26 +80,6 @@ static void effect12_reshape_cb(int w, int h)
 	gluPerspective(50.0, (GLdouble)w/(GLdouble)h, 0.1, 1000.0);
 }
 
-static void effect12_keyboard_cb(SDL_KeyboardEvent key)
-{
-	switch (key.keysym.sym) {
-	case SDLK_s: /* status */
-	case SDLK_m:
-		messages_toggle();
-		break;
-	case SDLK_p:
-		pause_request();
-		break;
-
-	case SDLK_ESCAPE:
-		return_to_calendar();
-		break;
-	default:
-		break;
-	}
-
-}
-
 int Effect12::init()
 {
 	glBlendFunc(GL_ONE, GL_ONE);
@@ -117,7 +97,6 @@ int effect12_register(struct effect *ep)
 {
 	ep->e_display  = effect12_display_cb;
 	ep->e_reshape  = effect12_reshape_cb;
-	ep->e_keyboard = effect12_keyboard_cb;
 
 	ep->e_name     = effect12_name;
 	return 0;

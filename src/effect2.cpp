@@ -180,13 +180,6 @@ static void effect2_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_b:
 		blend = !blend;
 		break;
-	case SDLK_s: /* status */
-	case SDLK_m:
-		messages_toggle();
-		break;
-	case SDLK_p:
-		pause_request();
-		break;
 	case SDLK_r:
 		reset();
 		break;
@@ -215,9 +208,6 @@ static void effect2_keyboard_cb(SDL_KeyboardEvent key)
 		break;
 	case SDLK_DOWN:
 		w[0] += 0.1;
-		break;
-	case SDLK_ESCAPE:
-		return_to_calendar();
 		break;
 	default:
 		break;

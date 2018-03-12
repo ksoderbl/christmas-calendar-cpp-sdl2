@@ -55,18 +55,19 @@ extern int dummy;
 
 /* ---------------------------------------------------------------------- */
 
+extern void calendar_idle_cb(void);
 extern void main_swap_window(void);
 extern void main_run_effect(int);
-#define return_to_calendar() main_run_effect(0)
 
 /* for use by pausing functions etc */
-void main_set_callbacks(struct effect *, int w, int h);
-extern struct effect *current_effect;
+void main_set_callbacks(struct effect *ep, int w, int h);
+void main_resume_effect(int w, int h);
+
+extern bool pausing;
+extern int current_effect_index;
 
 extern void mainKeyboardFunc(effect_keyboard_func func);
 extern void mainMouseFunc(effect_mouse_func func);
-extern void mainSwapBuffers(void);
-extern void mainPostRedisplay(void);
 
 /* these return 0 if ok, -1 if stub */
 extern int effect0_register(struct effect *); /* calendar */

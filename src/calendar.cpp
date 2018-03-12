@@ -532,18 +532,14 @@ void draw_scene(GLenum mode)
 
 /* ---------------------------------------------------------------------- */
 
-//static void calendar_idle_cb(void)
-//{
-//}
-
 static unsigned int idle_time = 0;
 
-static void calendar_idle_cb(void)
+void calendar_idle_cb(void)
 {
 	struct hatch *hp;
 	int newtime;
 
-	cout << "calendar_idle_cb(), effect_to_run = " << effect_to_run << endl;
+	//cout << "calendar_idle_cb(), effect_to_run = " << effect_to_run << endl;
 
 	/* check if we need to run another effect */
 	/* this is really ugly, but was programmed in haste */
@@ -678,14 +674,8 @@ static void calendar_keyboard_cb(SDL_KeyboardEvent key)
 		break;
 	case SDLK_SPACE:
 		break;
-	case SDLK_m:
-		messages_toggle();
-		break;
 	case SDLK_s:
 		use_specular = !use_specular;
-		break;
-	case SDLK_p:
-		pause_request();
 		break;
 	case SDLK_t:
 		use_texture = !use_texture;

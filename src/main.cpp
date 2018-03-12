@@ -11,17 +11,17 @@ using std::string;
 
 #include <SDL2/SDL.h>
 
-#include <math.h>
-#include <time.h>
-#include <signal.h>
-#include <stdarg.h>
-
-#include <stdlib.h>
-#include <string.h>
+#include <cassert>
+#include <cmath>
+#include <ctime>
+#include <csignal>
+#include <cstdarg>
+#include <cstdlib>
 
 #include "main.h"
 #include "messages.h"
 #include "stars.h"
+#include "quit.h"
 
 SDL_Window *window;
 SDL_GLContext glContext;
@@ -45,11 +45,7 @@ void mainMouseFunc(effect_mouse_func func)
 
 /* ---------------------------------------------------------------------- */
 
-
-static void main_reshape_cb(int w, int h);
-static void main_display_cb(void);
 static void main_idle_cb(void);
-static void main_darkness(void);
 static void main_flash(void);
 
 int dummy=0; /* don't change, see main.h */
@@ -57,9 +53,9 @@ int dummy=0; /* don't change, see main.h */
 /* ---------------------------------------------------------------------- */
 
 static struct effect effects[NUMEFFECTS] = {0, };
-struct effect *current_effect = NULL;
-
 static Effect *effect_objects[NUMEFFECTS] = {0, };
+int current_effect_index = -1;
+bool pausing = false;
 
 int init_effects(void)
 {
@@ -209,16 +205,12 @@ static int next_effect = -1;
  * Function main_run_effect should be called from an effect to
  * relinquish control. If used from the calendar it will direct
  * the main code to start some other effect.
- * The other effects should use main_run_effect(0) or
- * return_to_calendar().
  */
 void main_run_effect(int ei)
 {
 	int err, old;
 	GLint vp[4];
 
-	main_darkness();
-	
 	/* deallocate previous effect */
 	if (next_effect == -1)
 		next_effect = 0;
@@ -256,6 +248,18 @@ void main_run_effect(int ei)
 	main_flash();
 }
 
+void main_resume_effect(void)
+{
+	struct effect *ep = &effects[current_effect_index];
+	int w, h;
+
+	w = pause_reshape_width;
+	h = pause_reshape_height;
+
+	main_set_callbacks(ep, w, h);
+}
+
+
 void main_set_callbacks(struct effect *ep, int w, int h)
 {
 	if (!ep) {
@@ -290,7 +294,7 @@ static void run_next_effect(void)
 	ep = &effects[ei];
 
 	/* set the effect as the current effect */
-	current_effect = ep;
+	current_effect_index = ei;
 
 	/* set the callback, activating the new effect */
 	main_set_callbacks(ep, -1, -1);
@@ -347,59 +351,88 @@ static void flash_display_cb(void)
 		glClearColor(ccc[0], ccc[1], ccc[2], ccc[3]);
 		run_next_effect();
 	}
-
-	//SDL_GL_SwapWindow(window);
 }
-
 
 /* ---------------------------------------------------------------------- */
-
-
-static void main_reshape_cb(int w, int h)
-{
-	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	gluPerspective(60.0, (GLdouble)w/(GLdouble)h, 0.1, 100.0);
-}
-
-static void main_display_cb(void)
-{
-	cout << "CALLED main_display_cb()" << endl;
-	glClearColor(0.0, 0.0, 0.0, 0.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	SDL_GL_SwapWindow(window);
-}
 
 static int main_run = 0;
 
 static void main_idle_cb(void)
 {
-	if (!main_run) {
-		cout << "CALLING MAIN_RUN_EFFECT(0)" << endl;
-		main_run_effect(0);
-		main_run = 1;
-	}
-}
 
-
-static void main_darkness(void)
-{
-	displayFunc = main_display_cb;
-	reshapeFunc = main_reshape_cb;
-	idleFunc = main_idle_cb;
-	mouseFunc = 0;
-	keyboardFunc = 0;
 }
 
 /* ---------------------------------------------------------------------- */
 
+static void handle_keydown(SDL_KeyboardEvent key)
+{
+	//Effect *ep = 0;
+	
+	cout << "KEYDOWN, current effect = " << current_effect_index << endl;
+
+	//if (current_effect_index >= 0)
+	//	ep = effect_objects[current_effect_index];
+
+	if (pausing) {
+		cout << "pause keyboard cb\n";
+
+		switch (key.keysym.sym) {
+			/* quit pausing */
+		case SDLK_SPACE:
+		case SDLK_p:
+		case SDLK_PAUSE:
+		case SDLK_ESCAPE:
+			pausing = false;
+			main_resume_effect();
+			break;
+		default:
+			break;
+		}
+
+		return;
+	}
+
+
+	// not pausing
+	
+	switch (key.keysym.sym) {
+	case SDLK_ESCAPE:
+		if (current_effect_index == 0) {
+			quit_request();
+		}
+		else if (current_effect_index > 0) {
+			main_run_effect(0); //return_to_calendar();
+		}
+		break;
+	case SDLK_m:
+		messages_toggle();
+		break;
+
+	case SDLK_p:
+	case SDLK_PAUSE:
+		pause_request();
+		break;
+
+	default:
+		if (keyboardFunc)
+			(*keyboardFunc)(key);
+	}
+}
+
+
 void main_loop(void)
 {
+	time_t oldt = 0, t = 0;
 	bool loop = true;
 
 	while (loop)
 	{
+		t = time(0);
+		if (t != oldt) {
+			//cout << "time is " << t << endl;
+			oldt = t;
+		}
+		
 		SDL_Event event;
 		while (SDL_PollEvent(&event))
 		{
@@ -408,8 +441,7 @@ void main_loop(void)
 
 			else if (event.type == SDL_KEYDOWN)
 			{
-				if (keyboardFunc)
-					(*keyboardFunc)(event.key);
+				handle_keydown(event.key);
 			}
 
 			else if (event.type == SDL_MOUSEBUTTONDOWN)
@@ -444,12 +476,22 @@ void main_loop(void)
 			}
 		}
 
-		if (idleFunc == main_idle_cb) {
-			cout << "idle func is main idle cb" << endl;
+                if (idleFunc == main_idle_cb) {
+			//cout << "idle func is main idle cb" << endl;
+			if (!main_run) {
+				cout << "CALLING MAIN_RUN_EFFECT(0)" << endl;
+				main_run_effect(0);
+				main_run = 1;
+			}
+		} else if (idleFunc == calendar_idle_cb) {
+			//cout << "idle func is calendar idle cb" << endl;
+			calendar_idle_cb();
+		} else if (idleFunc == 0) {
+			;
+		} else {
+			cout << "idle func is " << idleFunc << endl;
+			assert(false);
 		}
-	
-		if (idleFunc)
-			(*idleFunc)();
 		
 		if (displayFunc)
 			(*displayFunc)();
@@ -470,8 +512,6 @@ int main(int argc, char *argv[])
 	/* store default attributes (redbook 2nd ed. p. 79) */
 	glPushAttrib(GL_ALL_ATTRIB_BITS);
 
-	reshapeFunc = main_reshape_cb;
-	displayFunc = main_display_cb;
 	idleFunc = main_idle_cb;
 	
 	main_loop();

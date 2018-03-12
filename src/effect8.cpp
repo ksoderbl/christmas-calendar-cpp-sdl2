@@ -210,12 +210,6 @@ static void effect8_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_SPACE:
 		randomize_icosahedron_colors();
 		break;
-	case SDLK_m:
-		messages_toggle();
-		break;
-	case SDLK_p:
-		pause_request();
-		break;
 	case SDLK_r:
 		effect8_reset();
 		break;
@@ -246,10 +240,6 @@ static void effect8_keyboard_cb(SDL_KeyboardEvent key)
 		break;
 	case SDLK_DOWN:
 		w[0] += 0.1;
-		break;
-		
-	case SDLK_ESCAPE:
-		return_to_calendar();
 		break;
 	default:
 		break;

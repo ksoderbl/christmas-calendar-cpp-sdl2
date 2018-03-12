@@ -168,13 +168,6 @@ static void effect16_reshape_cb(int w, int h)
 static void effect16_keyboard_cb(SDL_KeyboardEvent key)
 {
 	switch (key.keysym.sym) {
-	case SDLK_s: /* status */
-	case SDLK_m:
-		messages_toggle();
-		break;
-	case SDLK_p:
-		pause_request();
-		break;
 	case SDLK_r:
 		effect16_reset();
 		break;
@@ -185,9 +178,6 @@ static void effect16_keyboard_cb(SDL_KeyboardEvent key)
 		w[2] -= 0.1;
 		break;
 
-	case SDLK_ESCAPE:
-		return_to_calendar();
-		break;
 	case SDLK_PAGEUP:
 		my_z -= 2.0;
 		if (my_z <= 0.0)

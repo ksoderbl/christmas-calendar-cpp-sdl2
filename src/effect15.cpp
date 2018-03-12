@@ -302,13 +302,6 @@ static void effect15_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_SPACE:
 		function = (function + 1) % NUMFUNCTIONS;
 		break;
-	case SDLK_s: /* status */
-	case SDLK_m:
-		messages_toggle();
-		break;
-	case SDLK_p:
-		pause_request();
-		break;
 	case SDLK_r:
 		effect15_reset();
 		break;
@@ -320,10 +313,6 @@ static void effect15_keyboard_cb(SDL_KeyboardEvent key)
 		break;
 	case SDLK_z:
 		w[2] -= 0.1;
-		break;
-
-	case SDLK_ESCAPE:
-		return_to_calendar();
 		break;
 
 	case SDLK_PAGEUP:

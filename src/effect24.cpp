@@ -497,14 +497,8 @@ static void effect24_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_h:
 		do_hack = !do_hack;
 		break;
-	case SDLK_m:
-		messages_toggle();
-		break;
 	case SDLK_s:
 		use_specular = !use_specular;
-		break;
-	case SDLK_p:
-		pause_request();
 		break;
 	case SDLK_r:
 		reset();
@@ -539,9 +533,6 @@ static void effect24_keyboard_cb(SDL_KeyboardEvent key)
 			pos[i] -= 0.2 * fwd[i];
 		break;
 		
-	case SDLK_ESCAPE:
-		return_to_calendar();
-		break;
 	default:
 		break;
 	}

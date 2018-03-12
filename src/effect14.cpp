@@ -410,14 +410,8 @@ static void effect14_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_l:
 		use_lighting = !use_lighting;
 		break;
-	case SDLK_m:
-		messages_toggle();
-		break;
 	case SDLK_s:
 		use_specular = !use_specular;
-		break;
-	case SDLK_p:
-		pause_request();
 		break;
 	case SDLK_t:
 		use_texture = !use_texture;
@@ -433,9 +427,6 @@ static void effect14_keyboard_cb(SDL_KeyboardEvent key)
 		break;
 	case SDLK_z:
 		w[2] -= 0.1;
-		break;
-	case SDLK_ESCAPE:
-		return_to_calendar();
 		break;
 	case SDLK_PAGEUP:
 		myz -= 0.5;

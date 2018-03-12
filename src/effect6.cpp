@@ -706,12 +706,6 @@ static void effect6_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_s:
 		use_flat_shading = !use_flat_shading;
 		break;
-	case SDLK_m:
-		messages_toggle();
-		break;
-	case SDLK_p:
-		pause_request();
-		break;
 	case SDLK_r:
 		effect6_reset();
 		break;
@@ -767,10 +761,6 @@ static void effect6_keyboard_cb(SDL_KeyboardEvent key)
 		break;
 	case SDLK_DOWN:
 		rot[0] += 10.0;
-		break;
-		
-	case SDLK_ESCAPE:
-		return_to_calendar();
 		break;
 	default:
 		break;

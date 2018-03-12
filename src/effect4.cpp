@@ -226,12 +226,6 @@ static void effect4_keyboard_cb(SDL_KeyboardEvent key)
 	switch (key.keysym.sym) {
 	case SDLK_SPACE:
 		break;
-	case SDLK_m:
-		messages_toggle();
-		break;
-	case SDLK_p:
-		pause_request();
-		break;
 	case SDLK_r:
 		effect4_reset();
 		break;
@@ -260,10 +254,6 @@ static void effect4_keyboard_cb(SDL_KeyboardEvent key)
 		break;
 	case SDLK_DOWN:
 		w[0] += 0.1;
-		break;
-		
-	case SDLK_ESCAPE:
-		return_to_calendar();
 		break;
 	default:
 		break;
