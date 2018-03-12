@@ -56,18 +56,40 @@ int dummy=0; /* don't change, see main.h */
 
 /* ---------------------------------------------------------------------- */
 
-static struct effect *effects = NULL;
+static struct effect effects[NUMEFFECTS] = {0, };
 struct effect *current_effect = NULL;
+
+static Effect *effect_objects[NUMEFFECTS] = {0, };
 
 int init_effects(void)
 {
 	int err = 0, ei;
 	
-	effects = (effect_t *) calloc(NUMEFFECTS, sizeof(struct effect));
-	if (!effects) {
-		cerr << "calloc failed" << endl;
-		exit(1);
-	}
+	effect_objects[0] = new Effect0();
+	effect_objects[1] = new Effect1();
+	effect_objects[2] = new Effect2();
+	effect_objects[3] = new Effect3();
+	effect_objects[4] = new Effect4();
+	effect_objects[5] = new Effect5();
+	effect_objects[6] = new Effect6();
+	effect_objects[7] = new Effect7();
+	effect_objects[8] = new Effect8();
+	effect_objects[9] = new Effect9();
+	effect_objects[10] = new Effect10();
+	effect_objects[11] = new Effect11();
+	effect_objects[12] = new Effect12();
+	effect_objects[13] = new Effect13();
+	effect_objects[14] = new Effect14();
+	effect_objects[15] = new Effect15();
+	effect_objects[16] = new Effect16();
+	effect_objects[17] = new Effect17();
+	effect_objects[18] = new Effect18();
+	effect_objects[19] = new Effect19();
+	effect_objects[20] = new Effect20();
+	effect_objects[21] = new Effect21();
+	effect_objects[22] = new Effect22();
+	effect_objects[23] = new Effect23();
+	effect_objects[24] = new Effect24();
 
 	effects[0].e_register  = effect0_register;
 	effects[1].e_register  = effect1_register;
@@ -87,7 +109,7 @@ int init_effects(void)
 	effects[15].e_register = effect15_register;
 	effects[16].e_register = effect16_register;
 	effects[17].e_register = effect17_register;
-	effects[18].e_register = effect18_register;
+ 	effects[18].e_register = effect18_register;
 	effects[19].e_register = effect19_register;
 	effects[20].e_register = effect20_register;
 	effects[21].e_register = effect21_register;
@@ -195,12 +217,6 @@ void main_run_effect(int ei)
 	int err, old;
 	GLint vp[4];
 
-	if (*effects[ei].e_init == NULL) {
-		cerr << "effect " << ei
-		     << " [\"" << effects[ei].e_name << "\"] has no init method" << endl;
-		return;
-	}
-
 	main_darkness();
 	
 	/* deallocate previous effect */
@@ -208,7 +224,7 @@ void main_run_effect(int ei)
 		next_effect = 0;
 	else {
 		old = next_effect;
-		(*effects[old].e_cleanup)(&effects[old]);
+		effect_objects[old]->cleanup();
 	}
 
 	/* Restore default attributes.
@@ -225,9 +241,7 @@ void main_run_effect(int ei)
 	messages_init_fps();
 
 	/* allocate memory, do precomputations etc. */
-	/* note: if the effect is not initialized correctly,
-	 * we might get e.g. a segmentation fault here */
-	err = (*effects[ei].e_init)(&effects[ei]);
+	err = effect_objects[ei]->init();
 	if (err < 0) {
 		cerr << "effect " << ei
 		     << " [\"" << effects[ei].e_name << "\"] failed to initialize" << endl;
@@ -334,7 +348,7 @@ static void flash_display_cb(void)
 		run_next_effect();
 	}
 
-	SDL_GL_SwapWindow(window);
+	//SDL_GL_SwapWindow(window);
 }
 
 
@@ -351,6 +365,7 @@ static void main_reshape_cb(int w, int h)
 
 static void main_display_cb(void)
 {
+	cout << "CALLED main_display_cb()" << endl;
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	SDL_GL_SwapWindow(window);
@@ -361,6 +376,7 @@ static int main_run = 0;
 static void main_idle_cb(void)
 {
 	if (!main_run) {
+		cout << "CALLING MAIN_RUN_EFFECT(0)" << endl;
 		main_run_effect(0);
 		main_run = 1;
 	}
@@ -427,7 +443,11 @@ void main_loop(void)
 				}
 			}
 		}
-	     
+
+		if (idleFunc == main_idle_cb) {
+			cout << "idle func is main idle cb" << endl;
+		}
+	
 		if (idleFunc)
 			(*idleFunc)();
 		

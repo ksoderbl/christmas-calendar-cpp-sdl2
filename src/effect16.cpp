@@ -216,11 +216,8 @@ static void effect16_keyboard_cb(SDL_KeyboardEvent key)
 
 }
 
-
-int effect16_init_cb(struct effect *ep)
+int Effect16::init()
 {
-	ep=ep;
-
 #if 0
 	glFrontFace(GL_CCW);
 	glCullFace(GL_BACK);
@@ -232,21 +229,13 @@ int effect16_init_cb(struct effect *ep)
 	return 0;
 }
 
-
-
-void effect16_cleanup_cb(struct effect *ep)
+void Effect16::cleanup()
 {
-	(void)ep;
 
-	return;
 }
-
 
 int effect16_register(struct effect *ep)
 {
-	ep->e_init     = effect16_init_cb;
-	ep->e_cleanup  = effect16_cleanup_cb;
-
 	ep->e_display  = effect16_display_cb;
 	ep->e_reshape  = effect16_reshape_cb;
 	ep->e_keyboard = effect16_keyboard_cb;

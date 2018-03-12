@@ -499,13 +499,8 @@ static int init_textures(void)
 	return 0;
 }
 
-
-
-
-
-static int effect14_init_cb(struct effect *ep)
+int Effect14::init()
 {
-	ep = ep;
 	if ((init_textures()) < 0) {
 		cerr << "effect14: textures failed to init.\n";
 		return -1;
@@ -544,27 +539,13 @@ static void cleanup_textures(void)
 		tex_free(texture[i]);
 }
 
-
-
-
-static void effect14_cleanup_cb(struct effect *ep)
+void Effect14::cleanup()
 {
-	ep=ep;
-
 	cleanup_textures();
-
-	return;
 }
-
-
-/*static int effect14_init_cb(struct effect *ep)*/
-
 
 int effect14_register(struct effect *ep)
 {
-	ep->e_init     = effect14_init_cb;
-	ep->e_cleanup  = effect14_cleanup_cb;
-
 	ep->e_display  = effect14_display_cb;
 	ep->e_reshape  = effect14_reshape_cb;
 	ep->e_keyboard = effect14_keyboard_cb;

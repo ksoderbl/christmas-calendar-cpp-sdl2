@@ -100,28 +100,21 @@ static void effect23_keyboard_cb(SDL_KeyboardEvent key)
 
 }
 
-int effect23_init_cb(struct effect *ep)
+int Effect23::init()
 {
-	ep=ep;
-
 	glBlendFunc(GL_ONE, GL_ONE);
 	frame_count = 0; /* zero frame count */
 
 	return 0;
 }
 
-void effect23_cleanup_cb(struct effect *ep)
+void Effect23::cleanup()
 {
-	(void)ep;
 
-	return;
 }
 
 int effect23_register(struct effect *ep)
 {
-	ep->e_init     = effect23_init_cb;
-	ep->e_cleanup  = effect23_cleanup_cb;
-
 	ep->e_display  = effect23_display_cb;
 	ep->e_reshape  = effect23_reshape_cb;
 	ep->e_keyboard = effect23_keyboard_cb;

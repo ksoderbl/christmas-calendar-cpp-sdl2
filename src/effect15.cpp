@@ -354,11 +354,8 @@ static void effect15_keyboard_cb(SDL_KeyboardEvent key)
 
 }
 
-
-int effect15_init_cb(struct effect *ep)
+int Effect15::init()
 {
-	ep=ep;
-
 #if 0
 	glFrontFace(GL_CCW);
 	glCullFace(GL_BACK);
@@ -377,22 +374,13 @@ int effect15_init_cb(struct effect *ep)
 	return 0;
 }
 
-
-
-void effect15_cleanup_cb(struct effect *ep)
+void Effect15::cleanup()
 {
-	(void)ep;
 	glDeleteTextures(1, &texname);
-
-	return;
 }
-
 
 int effect15_register(struct effect *ep)
 {
-	ep->e_init     = effect15_init_cb;
-	ep->e_cleanup  = effect15_cleanup_cb;
-
 	ep->e_display  = effect15_display_cb;
 	ep->e_reshape  = effect15_reshape_cb;
 	ep->e_keyboard = effect15_keyboard_cb;

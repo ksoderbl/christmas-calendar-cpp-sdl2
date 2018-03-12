@@ -257,11 +257,8 @@ static void effect8_keyboard_cb(SDL_KeyboardEvent key)
 
 }
 
-
-int effect8_init_cb(struct effect *ep)
+int Effect8::init()
 {
-	ep=ep;
-
 	randomize_icosahedron_colors();
 
 	glFrontFace(GL_CCW);
@@ -274,21 +271,13 @@ int effect8_init_cb(struct effect *ep)
 	return 0;
 }
 
-
-
-void effect8_cleanup_cb(struct effect *ep)
+void Effect8::cleanup()
 {
-	ep = ep;
 
-	return;
 }
-
 
 int effect8_register(struct effect *ep)
 {
-	ep->e_init     = effect8_init_cb;
-	ep->e_cleanup  = effect8_cleanup_cb;
-
 	ep->e_display  = effect8_display_cb;
 	ep->e_reshape  = effect8_reshape_cb;
 	ep->e_keyboard = effect8_keyboard_cb;

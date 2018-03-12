@@ -131,7 +131,7 @@ static void update_lightpos(void)
 }
 
 
-static void init(void)
+static void init2(void)
 {
 	GLfloat mat_spec[]  = {1.0, 1.0, 1.0, 1.0};
 	GLfloat mat_shine[] = {120.0};
@@ -426,34 +426,22 @@ static void effect3_keyboard_cb(SDL_KeyboardEvent key)
 	}
 }
 
-
-
-
-static int effect3_init_cb(struct effect *ep)
+int Effect3::init()
 {
-	ep=ep;
-
 	/*numframes = 0;*/
 	if (make_tables() < 0)
 		return -1;
-	init();
+	init2();
 	return 0;
 }
 
-
-static void effect3_cleanup_cb(struct effect *ep)
+void Effect3::cleanup()
 {
-	ep=ep;
 	free_tables();
-	return;
 }
-
 
 int effect3_register(struct effect *ep)
 {
-	ep->e_init     = effect3_init_cb;
-	ep->e_cleanup  = effect3_cleanup_cb;
-	
 	ep->e_display  = effect3_display_cb;
         ep->e_reshape  = effect3_reshape_cb;
         ep->e_keyboard = effect3_keyboard_cb;

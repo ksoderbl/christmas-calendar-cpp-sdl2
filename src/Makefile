@@ -6,7 +6,7 @@
 
 SHELL	= /bin/sh
 
-SOURCES = main.cpp calendar.cpp picking.cpp calendar_primitives.cpp \
+SOURCES = main.cpp calendar.cpp picking.cpp calendar_primitives.cpp effect.cpp \
 	  effect1.cpp effect2.cpp effect3.cpp effect4.cpp effect5.cpp effect6.cpp \
 	  effect7.cpp effect8.cpp effect9.cpp effect10.cpp effect11.cpp effect12.cpp \
 	  effect13.cpp effect14.cpp effect15.cpp effect16.cpp effect17.cpp effect18.cpp \

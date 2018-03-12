@@ -236,11 +236,8 @@ static void reset(void)
 	my_z = MY_Z0;
 }
 
-
-
-int effect2_init_cb(struct effect *ep)
+int Effect2::init()
 {
-	ep=ep;
 #if 0
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_DEPTH_TEST);
@@ -252,22 +249,13 @@ int effect2_init_cb(struct effect *ep)
 	return 0;
 }
 
-
-
-
-void effect2_cleanup_cb(struct effect *ep)
+void Effect2::cleanup()
 {
-	(void)ep;
-
 	return;
 }
 
-
 int effect2_register(struct effect *ep)
 {
-	ep->e_init     = effect2_init_cb;
-	ep->e_cleanup  = effect2_cleanup_cb;
-
 	ep->e_display  = effect2_display_cb;
 	ep->e_reshape  = effect2_reshape_cb;
         ep->e_keyboard = effect2_keyboard_cb;

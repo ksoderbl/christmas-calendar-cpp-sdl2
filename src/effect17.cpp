@@ -432,38 +432,25 @@ static void effect17_keyboard_cb(SDL_KeyboardEvent key)
 
 }
 
-
-
-
-
-static int effect17_init_cb(struct effect *ep)
+int Effect17::init()
 {
-	ep=ep;
         glFrontFace(GL_CCW);
         glCullFace(GL_BACK);
         glEnable(GL_CULL_FACE);
 
 	make_list(1);
 
-
 	frame_count = 0;
 	return 0;
 }
 
-
-static void effect17_cleanup_cb(struct effect *ep)
+void Effect17::cleanup()
 {
-	ep=ep;
 	glDeleteLists(list, 1);
-	return;
 }
-
 
 int effect17_register(struct effect *ep)
 {
-	ep->e_init     = effect17_init_cb;
-	ep->e_cleanup  = effect17_cleanup_cb;
-	
 	ep->e_display  = effect17_display_cb;
         ep->e_reshape  = effect17_reshape_cb;
         ep->e_keyboard = effect17_keyboard_cb;

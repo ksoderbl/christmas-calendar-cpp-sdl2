@@ -215,11 +215,8 @@ static void effect22_keyboard_cb(SDL_KeyboardEvent key)
 
 }
 
-
-static int effect22_init_cb(struct effect *ep)
+int Effect22::init()
 {
-	(void)ep;
-
 #if 0
 	glShadeModel(GL_FLAT);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -268,21 +265,14 @@ static int effect22_init_cb(struct effect *ep)
 	return 0;
 }
 
-
-
-static void effect22_cleanup_cb(struct effect *ep)
+void Effect22::cleanup()
 {
-	ep=ep;
 
-	return;
 }
 
 
 int effect22_register(struct effect *ep)
 {
-	ep->e_init     = effect22_init_cb;
-	ep->e_cleanup  = effect22_cleanup_cb;
-
 	ep->e_display  = effect22_display_cb;
 	ep->e_reshape  = effect22_reshape_cb;
 	ep->e_keyboard = effect22_keyboard_cb;

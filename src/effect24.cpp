@@ -655,14 +655,9 @@ static void init_lights(void)
 #endif	
 }
 
-
-
-
-
-static int effect24_init_cb(struct effect *ep)
+int Effect24::init()
 {
 	int e;
-	ep=ep;
 
 	if ((e = init_quadrics()) < 0) {
 		cerr << "effect24: quadrics failed to init.\n";
@@ -692,27 +687,18 @@ static int effect24_init_cb(struct effect *ep)
 	return 0;
 }
 
-
-static void effect24_cleanup_cb(struct effect *ep)
+void Effect24::cleanup()
 {
-	ep=ep;
 	cleanup_quadrics();
 	cleanup_textures();
 #if USE_DISPLAY_LISTS
 	glDeleteLists(list[0], 1);
 	glDeleteLists(list[1], 1);
 #endif
-
-
-	return;
 }
-
 
 int effect24_register(struct effect *ep)
 {
-	ep->e_init     = effect24_init_cb;
-	ep->e_cleanup  = effect24_cleanup_cb;
-	
 	ep->e_display  = effect24_display_cb;
         ep->e_reshape  = effect24_reshape_cb;
         ep->e_keyboard = effect24_keyboard_cb;

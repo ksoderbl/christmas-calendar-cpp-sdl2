@@ -100,28 +100,21 @@ static void effect18_keyboard_cb(SDL_KeyboardEvent key)
 
 }
 
-int effect18_init_cb(struct effect *ep)
+int Effect18::init()
 {
-	ep=ep;
-
 	glBlendFunc(GL_ONE, GL_ONE);
 	frame_count = 0; /* zero frame count */
 
 	return 0;
 }
 
-void effect18_cleanup_cb(struct effect *ep)
+void Effect18::cleanup()
 {
-	(void)ep;
 
-	return;
 }
 
 int effect18_register(struct effect *ep)
 {
-	ep->e_init     = effect18_init_cb;
-	ep->e_cleanup  = effect18_cleanup_cb;
-
 	ep->e_display  = effect18_display_cb;
 	ep->e_reshape  = effect18_reshape_cb;
 	ep->e_keyboard = effect18_keyboard_cb;

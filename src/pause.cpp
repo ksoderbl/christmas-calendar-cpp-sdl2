@@ -50,7 +50,6 @@ int pause_is_requested(void)
 
 static void pause_display_cb(void)
 {
-	/* do nothing */
 	return;
 }
 
@@ -80,3 +79,4 @@ static void pause_reshape_cb(int width, int height)
 
 	cout << "reshape called during pause ...\n";
 }
+

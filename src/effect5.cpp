@@ -100,28 +100,20 @@ static void effect5_keyboard_cb(SDL_KeyboardEvent key)
 
 }
 
-int effect5_init_cb(struct effect *ep)
+int Effect5::init()
 {
-	ep=ep;
-
 	glBlendFunc(GL_ONE, GL_ONE);
 	frame_count = 0; /* zero frame count */
 
 	return 0;
 }
 
-void effect5_cleanup_cb(struct effect *ep)
+void Effect5::cleanup()
 {
-	(void)ep;
-
-	return;
 }
 
 int effect5_register(struct effect *ep)
 {
-	ep->e_init     = effect5_init_cb;
-	ep->e_cleanup  = effect5_cleanup_cb;
-
 	ep->e_display  = effect5_display_cb;
 	ep->e_reshape  = effect5_reshape_cb;
 	ep->e_keyboard = effect5_keyboard_cb;

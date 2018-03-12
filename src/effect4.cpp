@@ -270,11 +270,9 @@ static void effect4_keyboard_cb(SDL_KeyboardEvent key)
 	}
 }
 
-
-int effect4_init_cb(struct effect *ep)
+int Effect4::init()
 {
 	int i;
-	ep=ep;
 
 	list = glGenLists(1);
 	glNewList(list, GL_COMPILE);
@@ -295,21 +293,13 @@ int effect4_init_cb(struct effect *ep)
 	return 0;
 }
 
-
-
-void effect4_cleanup_cb(struct effect *ep)
+void Effect4::cleanup()
 {
-	ep = ep;
 	glDeleteLists(list, 1);
-	return;
 }
-
 
 int effect4_register(struct effect *ep)
 {
-	ep->e_init     = effect4_init_cb;
-	ep->e_cleanup  = effect4_cleanup_cb;
-
 	ep->e_display  = effect4_display_cb;
 	ep->e_reshape  = effect4_reshape_cb;
 	ep->e_keyboard = effect4_keyboard_cb;

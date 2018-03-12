@@ -778,13 +778,11 @@ static void effect6_keyboard_cb(SDL_KeyboardEvent key)
 
 }
 
-
-int effect6_init_cb(struct effect *ep)
+int Effect6::init()
 {
 	int i;
 	texture_t *tex; /* convenience */
 
-	(void)ep;
 	if (f_initialized)
 		return 0;
 
@@ -915,11 +913,9 @@ int effect6_init_cb(struct effect *ep)
 	return 0;
 }
 
-
-void effect6_cleanup_cb(struct effect *ep)
+void Effect6::cleanup()
 {
 	int i;
-	(void)ep;
 
 	for (i = 0; i < NUMTEXTURES; i++)
 		tex_free(textures[i]);
@@ -927,15 +923,10 @@ void effect6_cleanup_cb(struct effect *ep)
 	gluDeleteQuadric(qp);
 
 	f_initialized = 0;
-	return;
 }
-
 
 int effect6_register(struct effect *ep)
 {
-	ep->e_init     = effect6_init_cb;
-	ep->e_cleanup  = effect6_cleanup_cb;
-
 	ep->e_display  = effect6_display_cb;
 	ep->e_reshape  = effect6_reshape_cb;
 	ep->e_keyboard = effect6_keyboard_cb;

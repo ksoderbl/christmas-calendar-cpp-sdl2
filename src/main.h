@@ -14,6 +14,7 @@ using std::string;
 
 #include <SDL2/SDL.h>
 
+#include "effect.h"
 #include "messages.h"
 #include "pause.h"
 
@@ -54,40 +55,6 @@ extern int dummy;
 
 /* ---------------------------------------------------------------------- */
 
-struct effect;
-
-/* effect "methods" */
-typedef int  (*effect_registration_func)(struct effect *);
-typedef int  (*effect_init_func)(struct effect *);
-typedef void (*effect_cleanup_func)(struct effect *);
-
-typedef void (*effect_display_func)(void);
-typedef void (*effect_reshape_func)(int width, int height);
-typedef void (*effect_keyboard_func)(SDL_KeyboardEvent key);
-typedef void (*effect_mouse_func)(SDL_MouseButtonEvent button);
-typedef void (*effect_motion_func)(SDL_MouseMotionEvent motion);
-typedef void (*effect_idle_func)(void);
-
-
-typedef struct effect {
-	effect_registration_func  e_register;
-	effect_init_func          e_init;
-	effect_cleanup_func       e_cleanup;
-	
-	effect_display_func       e_display;
-	effect_reshape_func       e_reshape;
-	effect_keyboard_func      e_keyboard;
-	effect_mouse_func         e_mouse;
-	effect_motion_func        e_motion;
-	effect_idle_func          e_idle;
-
-	string                    e_name;
-} effect_t;
-
-
-
-
-/* ---------------------------------------------------------------------- */
 extern void main_swap_window(void);
 extern void main_run_effect(int);
 #define return_to_calendar() main_run_effect(0)

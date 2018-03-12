@@ -8,7 +8,15 @@
 #include "main.h"
 #include "stars.h"
 
+
+
 static string effect1_name = "Colored Cubes";
+
+//Effect1::Effect1(){}
+
+//Effect1::~Effect1(){}
+
+//string Effect1::name() { return effect1_name; }
 
 /* state variables */
 
@@ -57,9 +65,18 @@ static void effect1_reset(void)
 #endif
 }
 
-
-
-
+/*
+void Effect1::reset()
+{
+	int i;
+	
+	for (i = 0; i < 3; i++) {
+		rot[i] = 0.0;
+		w[i] = 0.0;
+	}
+	my_z = MY_Z0;
+}
+*/
 
 static void draw_cube(void)
 {
@@ -259,11 +276,8 @@ static void effect1_keyboard_cb(SDL_KeyboardEvent key)
 	}
 }
 
-
-int effect1_init_cb(struct effect *ep)
+int Effect1::init()
 {
-	(void)ep;
-
 	cube_list = glGenLists(1);
 	glNewList(cube_list, GL_COMPILE);
 	draw_cubes(8, 8, 8);
@@ -314,22 +328,13 @@ int effect1_init_cb(struct effect *ep)
 	return 0;
 }
 
-
-
-void effect1_cleanup_cb(struct effect *ep)
+void Effect1::cleanup()
 {
-	ep = ep;
 	glDeleteLists(cube_list, 1);
-
-	return;
 }
-
 
 int effect1_register(struct effect *ep)
 {
-	ep->e_init     = effect1_init_cb;
-	ep->e_cleanup  = effect1_cleanup_cb;
-
 	ep->e_display  = effect1_display_cb;
 	ep->e_reshape  = effect1_reshape_cb;
 	ep->e_keyboard = effect1_keyboard_cb;

@@ -532,12 +532,18 @@ void draw_scene(GLenum mode)
 
 /* ---------------------------------------------------------------------- */
 
+//static void calendar_idle_cb(void)
+//{
+//}
+
 static unsigned int idle_time = 0;
 
 static void calendar_idle_cb(void)
 {
 	struct hatch *hp;
 	int newtime;
+
+	cout << "calendar_idle_cb(), effect_to_run = " << effect_to_run << endl;
 
 	/* check if we need to run another effect */
 	/* this is really ugly, but was programmed in haste */
@@ -572,9 +578,6 @@ static void calendar_display_cb(void)
 {
 	char s[256];
 	double up_phi, up_theta;
-
-	glShadeModel(GL_SMOOTH);
-
 
 	glShadeModel(GL_SMOOTH);
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -948,15 +951,9 @@ static void calendar_init_lights(void)
 
 /* ---------------------------------------------------------------------- */
 
-
-
-
-
-
-static int calendar_init_cb(struct effect *ep)
+int Effect0::init()
 {
 	int e;
-	ep = ep;
 
 	idle_time = 0;
 
@@ -981,13 +978,8 @@ static int calendar_init_cb(struct effect *ep)
 	return 0;
 }
 
-
-
-
-
-static void calendar_cleanup_cb(struct effect *ep)
+void Effect0::cleanup()
 {
-	ep=ep;
 #if CALENDAR_CLEANUP_TEXTURES
 	calendar_cleanup_textures();
 #endif
@@ -999,8 +991,6 @@ static void calendar_cleanup_cb(struct effect *ep)
 /* mandatory registration func */
 int effect0_register(struct effect *ep)
 {
-	ep->e_init     = calendar_init_cb;
-	ep->e_cleanup  = calendar_cleanup_cb;
 	ep->e_display  = calendar_display_cb;
         ep->e_reshape  = calendar_reshape_cb;
         ep->e_keyboard = calendar_keyboard_cb;

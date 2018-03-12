@@ -100,28 +100,21 @@ static void effect9_keyboard_cb(SDL_KeyboardEvent key)
 
 }
 
-int effect9_init_cb(struct effect *ep)
+int Effect9::init()
 {
-	ep=ep;
-
 	glBlendFunc(GL_ONE, GL_ONE);
 	frame_count = 0; /* zero frame count */
 
 	return 0;
 }
 
-void effect9_cleanup_cb(struct effect *ep)
+void Effect9::cleanup()
 {
-	(void)ep;
 
-	return;
 }
 
 int effect9_register(struct effect *ep)
 {
-	ep->e_init     = effect9_init_cb;
-	ep->e_cleanup  = effect9_cleanup_cb;
-
 	ep->e_display  = effect9_display_cb;
 	ep->e_reshape  = effect9_reshape_cb;
 	ep->e_keyboard = effect9_keyboard_cb;

@@ -717,14 +717,9 @@ static void init_lights(void)
 	glLightf( GL_LIGHT2, GL_QUADRATIC_ATTENUATION, 0.01);
 }
 
-
-
-
-
-static int effect20_init_cb(struct effect *ep)
+int Effect20::init()
 {
 	int e;
-	ep=ep;
 
 	if ((e = init_quadrics()) < 0) {
 		cerr << "effect20: quadrics failed to init.\n";
@@ -755,28 +750,18 @@ static int effect20_init_cb(struct effect *ep)
 	return 0;
 }
 
-
-static void effect20_cleanup_cb(struct effect *ep)
+void Effect20::cleanup()
 {
-	ep=ep;
-	
 	cleanup_quadrics();
 	cleanup_textures();
 #if USE_DISPLAY_LIST
 	glDeleteLists(list[0], 1);
 	glDeleteLists(list[1], 1);
 #endif
-
-
-	return;
 }
-
 
 int effect20_register(struct effect *ep)
 {
-	ep->e_init     = effect20_init_cb;
-	ep->e_cleanup  = effect20_cleanup_cb;
-	
 	ep->e_display  = effect20_display_cb;
         ep->e_reshape  = effect20_reshape_cb;
         ep->e_keyboard = effect20_keyboard_cb;
