@@ -21,9 +21,11 @@ using std::string;
 
 static GLUquadricObj *qp = 0; /* XXX */
 
+string Effect6::getName()
+{
+	return "Flag";
+}
 
-
-static string name = "Flag";
 /* state variables */
 static int use_texture   = 1;
 static int use_lighting  = 1;
@@ -440,7 +442,7 @@ static void update_position(void)
 
 
 
-static void effect6_reset(void)
+void Effect6::reset()
 {
 	int i, row, col;
 #if 0	
@@ -472,10 +474,7 @@ static void effect6_reset(void)
 
 }
 
-
-
-
-static void effect6_display_cb(void)
+void Effect6::drawFrame()
 {
 	int i, row, col;
 	char s[256];
@@ -692,7 +691,7 @@ static void effect6_display_cb(void)
 	frame_count++;
 }
 
-static void effect6_reshape_cb(int w, int h)
+void Effect6::resize(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -705,9 +704,6 @@ static void effect6_keyboard_cb(SDL_KeyboardEvent key)
 	switch (key.keysym.sym) {
 	case SDLK_s:
 		use_flat_shading = !use_flat_shading;
-		break;
-	case SDLK_r:
-		effect6_reset();
 		break;
 	case SDLK_l:
 		use_lighting = !use_lighting;
@@ -776,7 +772,7 @@ int Effect6::init()
 	if (f_initialized)
 		return 0;
 
-	effect6_reset();
+	reset();
 
 #if 0
 	for (i = 0; i < 300; i++) {
@@ -917,10 +913,7 @@ void Effect6::cleanup()
 
 int effect6_register(struct effect *ep)
 {
-	ep->e_display  = effect6_display_cb;
-	ep->e_reshape  = effect6_reshape_cb;
 	ep->e_keyboard = effect6_keyboard_cb;
 
-	ep->e_name     = name;
 	return 0;
 }

@@ -54,14 +54,15 @@ int dummy=0; /* don't change, see main.h */
 
 static struct effect effects[NUMEFFECTS] = {0, };
 static Effect *effect_objects[NUMEFFECTS] = {0, };
-int current_effect_index = -1;
+int currentEffectIndex = -1;
+static Effect *currentEffect = 0;
 bool pausing = false;
 
 int init_effects(void)
 {
 	int err = 0, ei;
 	
-	effect_objects[0] = new Effect0();
+	effect_objects[0] = new CalendarEffect();
 	effect_objects[1] = new Effect1();
 	effect_objects[2] = new Effect2();
 	effect_objects[3] = new Effect3();
@@ -119,11 +120,11 @@ int init_effects(void)
 	 */
 	for (ei = 0; ei < NUMEFFECTS; ei++) {
 		err = (*effects[ei].e_register)(&effects[ei]);
-		if (err < 0) {
-			cerr << "registration of effect " << ei << " is a stub" << endl;
-		} else {
-			cout << "effect" << ei << "name         : " << effects[ei].e_name << "\n";
-		}
+		//if (err < 0) {
+		//	cerr << "registration of effect " << ei << " is a stub" << endl;
+		//} else {
+		cout << "effect" << ei << "name: " << effect_objects[ei]->getName() << "\n";
+		//}
 	}
 
 	stars_make();
@@ -236,12 +237,13 @@ void main_run_effect(int ei)
 	err = effect_objects[ei]->init();
 	if (err < 0) {
 		cerr << "effect " << ei
-		     << " [\"" << effects[ei].e_name << "\"] failed to initialize" << endl;
+		     << " [\"" << effect_objects[ei]->getName() << "\"] failed to initialize" << endl;
 		exit(1);
 	}
 
 	glGetIntegerv(GL_VIEWPORT, vp);
-	(*effects[ei].e_reshape)((int)vp[2], (int)vp[3]);
+	//(*effects[ei].e_reshape)((int)vp[2], (int)vp[3]);
+	effect_objects[ei]->resize((int)vp[2], (int)vp[3]);
 
 	next_effect = ei;
 	
@@ -250,7 +252,7 @@ void main_run_effect(int ei)
 
 void main_resume_effect(void)
 {
-	struct effect *ep = &effects[current_effect_index];
+	struct effect *ep = &effects[currentEffectIndex];
 	int w, h;
 
 	w = pause_reshape_width;
@@ -276,7 +278,7 @@ void main_set_callbacks(struct effect *ep, int w, int h)
 	
 	/* if we resized during pause */
 	if (w != -1) {
-		(ep->e_reshape)(w, h);
+		//TODO (ep->e_reshape)(w, h);
 	}
 }
 
@@ -294,7 +296,8 @@ static void run_next_effect(void)
 	ep = &effects[ei];
 
 	/* set the effect as the current effect */
-	current_effect_index = ei;
+	currentEffectIndex = ei;
+	currentEffect = effect_objects[currentEffectIndex];
 
 	/* set the callback, activating the new effect */
 	main_set_callbacks(ep, -1, -1);
@@ -368,10 +371,10 @@ static void handle_keydown(SDL_KeyboardEvent key)
 {
 	//Effect *ep = 0;
 	
-	cout << "KEYDOWN, current effect = " << current_effect_index << endl;
+	cout << "KEYDOWN, current effect = " << currentEffectIndex << endl;
 
-	//if (current_effect_index >= 0)
-	//	ep = effect_objects[current_effect_index];
+	//if (currentEffectIndex >= 0)
+	//	ep = effect_objects[currentEffectIndex];
 
 	if (pausing) {
 		cout << "pause keyboard cb\n";
@@ -397,10 +400,10 @@ static void handle_keydown(SDL_KeyboardEvent key)
 	
 	switch (key.keysym.sym) {
 	case SDLK_ESCAPE:
-		if (current_effect_index == 0) {
+		if (currentEffectIndex == 0) {
 			quit_request();
 		}
-		else if (current_effect_index > 0) {
+		else if (currentEffectIndex > 0) {
 			main_run_effect(0); //return_to_calendar();
 		}
 		break;
@@ -411,6 +414,10 @@ static void handle_keydown(SDL_KeyboardEvent key)
 	case SDLK_p:
 	case SDLK_PAUSE:
 		pause_request();
+		break;
+	case SDLK_r:
+		if (currentEffect)
+			currentEffect->reset();
 		break;
 
 	default:
@@ -469,6 +476,8 @@ void main_loop(void)
 					
 					if (reshapeFunc)
 						(*reshapeFunc)(w, h);
+					else if (currentEffect)
+						currentEffect->resize(w, h);
 					break;
 				default:
 					break;
@@ -495,6 +504,8 @@ void main_loop(void)
 		
 		if (displayFunc)
 			(*displayFunc)();
+		else if (currentEffect)
+			currentEffect->drawFrame();
 		
 		SDL_GL_SwapWindow(window);
 	} // while loop

@@ -11,7 +11,10 @@
 #include "stars.h"
 #include "util.h"
 
-static string effect4_name = "Ball";
+string Effect4::getName()
+{
+	return "Ball";
+}
 
 #define SUBDIVISION_DEPTH 4
 
@@ -123,14 +126,7 @@ subdivide(GLfloat *v1, GLfloat *v2, GLfloat *v3, long depth)
 	subdivide(v12, v23, v31, depth-1);
 }
 
-
-
-
-
-
-
-
-static void effect4_reset(void)
+void Effect4::reset()
 {
 	int i;
 	
@@ -140,14 +136,7 @@ static void effect4_reset(void)
 	}
 }
 
-
-
-
-
-
-
-
-static void effect4_display_cb(void)
+void Effect4::drawFrame()
 {
 	int i;
 	char s[256];
@@ -213,7 +202,7 @@ static void effect4_display_cb(void)
 	frame_count++;
 }
 
-static void effect4_reshape_cb(int w, int h)
+void Effect4::resize(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -226,9 +215,7 @@ static void effect4_keyboard_cb(SDL_KeyboardEvent key)
 	switch (key.keysym.sym) {
 	case SDLK_SPACE:
 		break;
-	case SDLK_r:
-		effect4_reset();
-		break;
+
 	case SDLK_x:
 		w[2] += 0.1;
 		break;
@@ -290,10 +277,7 @@ void Effect4::cleanup()
 
 int effect4_register(struct effect *ep)
 {
-	ep->e_display  = effect4_display_cb;
-	ep->e_reshape  = effect4_reshape_cb;
 	ep->e_keyboard = effect4_keyboard_cb;
 
-	ep->e_name     = effect4_name;
 	return 0;
 }

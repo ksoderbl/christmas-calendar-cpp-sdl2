@@ -27,7 +27,12 @@ using std::string;
 #undef DRAW_COORDSYS
 
 static int frame_count = 0; /* frames drawn */
-static string effect24_name = "Earth and Sun";
+
+string Effect24::getName()
+{
+	return "Earth and Sun";
+}
+
 static GLfloat fontcolor[3] = {0.2, 0.7, 1.0};
 
 static int use_texture   = 1;
@@ -144,7 +149,7 @@ static string texfilenames[NUMTEXTURES+1]  =
 
 
 
-static void reset(void)
+void Effect24::reset()
 {
 }
 
@@ -195,7 +200,7 @@ static void earth(void)
 /* ---------------------------------------------------------------------- */
 /* ---------------------------------------------------------------------- */
 
-static void effect24_display_cb(void)
+void Effect24::drawFrame()
 {
 	char s[256];
 	double up_phi, up_theta;
@@ -434,9 +439,7 @@ static void effect24_display_cb(void)
 	frame_count++;
 }
 
-
-
-static void effect24_reshape_cb(int w, int h)
+void Effect24::resize(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -499,9 +502,6 @@ static void effect24_keyboard_cb(SDL_KeyboardEvent key)
 		break;
 	case SDLK_s:
 		use_specular = !use_specular;
-		break;
-	case SDLK_r:
-		reset();
 		break;
 	case SDLK_c:
 		use_coordsys = !use_coordsys;
@@ -690,11 +690,8 @@ void Effect24::cleanup()
 
 int effect24_register(struct effect *ep)
 {
-	ep->e_display  = effect24_display_cb;
-        ep->e_reshape  = effect24_reshape_cb;
         ep->e_keyboard = effect24_keyboard_cb;
         ep->e_motion   = effect24_motion_cb;
 
-	ep->e_name     = effect24_name;
 	return 0;
 }

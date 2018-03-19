@@ -13,7 +13,10 @@
 
 static int frame_count = 0; /* frames drawn */
 
-static string effect12_name = "Stars only";
+string Effect12::getName()
+{
+	return "Stars only";
+}
 
 /*static GLdouble width=0.0, height=0.0;*/
 static GLfloat rot[3] = {0.0, 0.0, 0.0};
@@ -24,7 +27,7 @@ static GLfloat my_z = MY_Z0;
 
 static GLfloat fontcolor[3] = {1.0, 1.0, 0.0};
 
-static void effect12_display_cb(void)
+void Effect12::drawFrame()
 {
 	int i;
 	char s[256];
@@ -72,7 +75,7 @@ static void effect12_display_cb(void)
 	frame_count++;
 }
 
-static void effect12_reshape_cb(int w, int h)
+void Effect12::resize(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -90,15 +93,14 @@ int Effect12::init()
 
 void Effect12::cleanup()
 {
+}
 
+void Effect12::reset()
+{
 }
 
 int effect12_register(struct effect *ep)
 {
-	ep->e_display  = effect12_display_cb;
-	ep->e_reshape  = effect12_reshape_cb;
-
-	ep->e_name     = effect12_name;
 	return 0;
 }
 

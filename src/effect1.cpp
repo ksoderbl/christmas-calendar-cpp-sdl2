@@ -10,13 +10,10 @@
 
 
 
-static string effect1_name = "Colored Cubes";
-
-//Effect1::Effect1(){}
-
-//Effect1::~Effect1(){}
-
-//string Effect1::name() { return effect1_name; }
+string Effect1::getName()
+{
+	return "Colored Cubes";
+}
 
 /* state variables */
 
@@ -49,7 +46,7 @@ static GLfloat mat_shininess[]   = { 10.0 };
 static GLfloat fontcolor[3] = {1.0, 0.0, 0.0};
 
 
-static void effect1_reset(void)
+void Effect1::reset()
 {
 	int i;
 	
@@ -64,19 +61,6 @@ static void effect1_reset(void)
 	w[2] = 90.0;
 #endif
 }
-
-/*
-void Effect1::reset()
-{
-	int i;
-	
-	for (i = 0; i < 3; i++) {
-		rot[i] = 0.0;
-		w[i] = 0.0;
-	}
-	my_z = MY_Z0;
-}
-*/
 
 static void draw_cube(void)
 {
@@ -169,7 +153,7 @@ static void draw_cubes(int nx, int ny, int nz)
 
 
 
-static void effect1_display_cb(void)
+void Effect1::drawFrame()
 {
 	int i;
 	char s[256];
@@ -201,7 +185,8 @@ static void effect1_display_cb(void)
 			rot[i] += 360.0;
 	}
 
-	
+
+	//draw_cubes(16, 16, 16);
 
 	glCallList(cube_list);
 
@@ -221,7 +206,7 @@ static void effect1_display_cb(void)
 	frame_count++;
 }
 
-static void effect1_reshape_cb(int w, int h)
+void Effect1::resize(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -232,9 +217,7 @@ static void effect1_reshape_cb(int w, int h)
 static void effect1_keyboard_cb(SDL_KeyboardEvent key)
 {
 	switch (key.keysym.sym) {
-	case SDLK_r:
-		effect1_reset();
-		break;
+
 	case SDLK_x:
 		w[2] += 0.1;
 		break;
@@ -325,10 +308,7 @@ void Effect1::cleanup()
 
 int effect1_register(struct effect *ep)
 {
-	ep->e_display  = effect1_display_cb;
-	ep->e_reshape  = effect1_reshape_cb;
 	ep->e_keyboard = effect1_keyboard_cb;
 
-	ep->e_name     = effect1_name;
 	return 0;
 }

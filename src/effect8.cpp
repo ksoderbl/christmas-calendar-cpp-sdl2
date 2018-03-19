@@ -11,7 +11,10 @@
 #include "stars.h"
 #include "util.h"
 
-static string effect8_name = "Gouraud shaded Icosahedron";
+string Effect8::getName()
+{
+	return "Gouraud shaded Icosahedron";
+}
 
 static GLdouble x_width;
 static GLdouble x_height;
@@ -77,8 +80,7 @@ static void randomize_icosahedron_colors(void)
 	}
 }
 
-
-static void effect8_reset(void)
+void Effect8::reset()
 {
 	int i;
 	
@@ -89,14 +91,7 @@ static void effect8_reset(void)
 	my_z = MY_Z0;
 }
 
-
-
-
-
-
-
-
-static void effect8_display_cb(void)
+void Effect8::drawFrame()
 {
 	int i;
 	char s[256];
@@ -193,7 +188,7 @@ static void effect8_display_cb(void)
 	frame_count++;
 }
 
-static void effect8_reshape_cb(int w, int h)
+void Effect8::resize(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	x_width = (GLdouble)w;
@@ -209,9 +204,6 @@ static void effect8_keyboard_cb(SDL_KeyboardEvent key)
 	switch (key.keysym.sym) {
 	case SDLK_SPACE:
 		randomize_icosahedron_colors();
-		break;
-	case SDLK_r:
-		effect8_reset();
 		break;
 	case SDLK_x:
 		x_fovy += 1.0;
@@ -268,11 +260,8 @@ void Effect8::cleanup()
 
 int effect8_register(struct effect *ep)
 {
-	ep->e_display  = effect8_display_cb;
-	ep->e_reshape  = effect8_reshape_cb;
 	ep->e_keyboard = effect8_keyboard_cb;
 
-	ep->e_name     = effect8_name;
 	return 0;
 }
 

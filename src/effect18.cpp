@@ -13,7 +13,10 @@
 
 static int frame_count = 0; /* frames drawn */
 
-static string effect18_name = "Stars only";
+string Effect18::getName()
+{
+	return "Stars only";
+}
 
 /*static GLdouble width=0.0, height=0.0;*/
 static GLfloat rot[3] = {0.0, 0.0, 0.0};
@@ -24,7 +27,7 @@ static GLfloat my_z = MY_Z0;
 
 static GLfloat fontcolor[3] = {1.0, 1.0, 0.0};
 
-static void effect18_display_cb(void)
+void Effect18::drawFrame()
 {
 	int i;
 	char s[256];
@@ -72,7 +75,7 @@ static void effect18_display_cb(void)
 	frame_count++;
 }
 
-static void effect18_reshape_cb(int w, int h)
+void Effect18::resize(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -90,15 +93,14 @@ int Effect18::init()
 
 void Effect18::cleanup()
 {
+}
 
+void Effect18::reset()
+{
 }
 
 int effect18_register(struct effect *ep)
 {
-	ep->e_display  = effect18_display_cb;
-	ep->e_reshape  = effect18_reshape_cb;
-
-	ep->e_name     = effect18_name;
 	return 0;
 }
 

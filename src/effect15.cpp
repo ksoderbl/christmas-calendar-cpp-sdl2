@@ -10,7 +10,10 @@
 #include "main.h"
 #include "stars.h"
 
-static string effect15_name = "Hypnotic Patterns";
+string Effect15::getName()
+{
+	return "Hypnotic Patterns";
+}
 
 /* state variables */
 
@@ -38,7 +41,7 @@ static GLuint  texname = 0;
 
 
 
-static void effect15_reset(void)
+void Effect15::reset()
 {
 	int i;
 	
@@ -176,11 +179,7 @@ static void draw_cube(void)
 
 }
 
-
-
-
-
-static void effect15_display_cb(void)
+void Effect15::drawFrame()
 {
 	int i;
 	GLdouble a, b, fc, phi;
@@ -288,7 +287,7 @@ static void effect15_display_cb(void)
 	frame_count++;
 }
 
-static void effect15_reshape_cb(int w, int h)
+void Effect15::resize(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -302,9 +301,6 @@ static void effect15_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_SPACE:
 		function = (function + 1) % NUMFUNCTIONS;
 		break;
-	case SDLK_r:
-		effect15_reset();
-		break;
 	case SDLK_f:
 		freeze_tex = !freeze_tex;
 		break;
@@ -317,13 +313,9 @@ static void effect15_keyboard_cb(SDL_KeyboardEvent key)
 
 	case SDLK_PAGEUP:
 		my_z -= 2.0;
-		if (my_z <= 0.0)
-			my_z = 0.0;
 		break;
 	case SDLK_PAGEDOWN:
 		my_z += 2.0;
-		if (my_z >= STARS_MINDIST)
-			my_z = STARS_MINDIST;
 		break;
 	case SDLK_LEFT:
 		w[1] -= 0.1;
@@ -370,10 +362,7 @@ void Effect15::cleanup()
 
 int effect15_register(struct effect *ep)
 {
-	ep->e_display  = effect15_display_cb;
-	ep->e_reshape  = effect15_reshape_cb;
 	ep->e_keyboard = effect15_keyboard_cb;
 
-	ep->e_name     = effect15_name;
 	return 0;
 }

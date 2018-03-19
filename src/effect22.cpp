@@ -8,7 +8,10 @@
 #include "main.h"
 #include "stars.h"
 
-static string effect22_name = "GLUT Objects II";
+string Effect22::getName()
+{
+	return "GLUT Objects II";
+}
 
 /* state variables */
 
@@ -53,7 +56,7 @@ static GLfloat color_array[NUMCOLORS][3] =
  { 1.0, 1.0, 1.0 }};
 
 
-static void effect22_reset(void)
+void Effect22::reset()
 {
 	int i;
 	
@@ -64,10 +67,7 @@ static void effect22_reset(void)
 	my_z = MY_Z0;
 }
 
-
-
-
-static void effect22_display_cb(void)
+void Effect22::drawFrame()
 {
 	int i;
 	char s[256];
@@ -157,7 +157,7 @@ static void effect22_display_cb(void)
 	frame_count++;
 }
 
-static void effect22_reshape_cb(int w, int h)
+void Effect22::resize(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -170,9 +170,6 @@ static void effect22_keyboard_cb(SDL_KeyboardEvent key)
 	switch (key.keysym.sym) {
 	case SDLK_SPACE:
 		object = (object + 1) % NUMOBJECTS;
-		break;
-	case SDLK_r:
-		effect22_reset();
 		break;
 	case SDLK_x:
 		w[2] += 0.1;
@@ -264,10 +261,7 @@ void Effect22::cleanup()
 
 int effect22_register(struct effect *ep)
 {
-	ep->e_display  = effect22_display_cb;
-	ep->e_reshape  = effect22_reshape_cb;
 	ep->e_keyboard = effect22_keyboard_cb;
 
-	ep->e_name     = effect22_name;
 	return 0;
 }

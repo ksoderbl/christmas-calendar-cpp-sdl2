@@ -13,7 +13,10 @@
 
 static int frame_count = 0; /* frames drawn */
 
-static string effect7_name = "Stars only";
+string Effect7::getName()
+{
+	return "Stars only";
+}
 
 /*static GLdouble width=0.0, height=0.0;*/
 static GLfloat rot[3] = {0.0, 0.0, 0.0};
@@ -24,7 +27,7 @@ static GLfloat my_z = MY_Z0;
 
 static GLfloat fontcolor[3] = {1.0, 1.0, 0.0};
 
-static void effect7_display_cb(void)
+void Effect7::drawFrame()
 {
 	int i;
 	char s[256];
@@ -72,7 +75,7 @@ static void effect7_display_cb(void)
 	frame_count++;
 }
 
-static void effect7_reshape_cb(int w, int h)
+void Effect7::resize(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -90,15 +93,14 @@ int Effect7::init()
 
 void Effect7::cleanup()
 {
+}
 
+void Effect7::reset()
+{
 }
 
 int effect7_register(struct effect *ep)
 {
-	ep->e_display  = effect7_display_cb;
-	ep->e_reshape  = effect7_reshape_cb;
-
-	ep->e_name     = effect7_name;
 	return 0;
 }
 

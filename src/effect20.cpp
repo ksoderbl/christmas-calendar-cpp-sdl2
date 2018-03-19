@@ -36,7 +36,10 @@ static int light2_on = 1;
 
 static int frame_count = 0; /* frames drawn */
 
-static string effect20_name = "Electricity";
+string Effect20::getName()
+{
+	return "Electricity";
+}
 
 /* number of lights */
 #define LT_N 3
@@ -177,7 +180,7 @@ void midpoint_disp(GLdouble (*array)[3], int n, GLdouble xmin, GLdouble xmax,
 }
 
 
-static void reset(void)
+void Effect20::reset()
 {
 }
 
@@ -298,7 +301,7 @@ static void make_pole_list(void)
 
 static GLdouble lt[3] = {0.0025, 0.0024, 0.0007};
 
-static void effect20_display_cb(void)
+void Effect20::drawFrame()
 {
 	int i, j;
 	char s[256];
@@ -489,9 +492,7 @@ static void effect20_display_cb(void)
 	frame_count++;
 }
 
-
-
-static void effect20_reshape_cb(int w, int h)
+void Effect20::resize(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -553,9 +554,6 @@ static void effect20_keyboard_cb(SDL_KeyboardEvent key)
 		break;
 	case SDLK_s:
 		use_specular = !use_specular;
-		break;
-	case SDLK_r:
-		reset();
 		break;
 #if !USE_DISPLAY_LIST
 	case SDLK_t:
@@ -753,11 +751,8 @@ void Effect20::cleanup()
 
 int effect20_register(struct effect *ep)
 {
-	ep->e_display  = effect20_display_cb;
-        ep->e_reshape  = effect20_reshape_cb;
         ep->e_keyboard = effect20_keyboard_cb;
         ep->e_motion   = effect20_motion_cb;
 
-	ep->e_name     = effect20_name;
 	return 0;
 }

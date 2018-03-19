@@ -35,7 +35,10 @@
 static int blend = 1;
 static int frame_count = 0; /* frames drawn */
 
-static string effect2_name = "\"Pulsar\"";
+string Effect2::getName()
+{
+	return "\"Pulsar\"";
+}
 
 
 
@@ -49,11 +52,7 @@ static GLfloat my_z = MY_Z0;
 
 static GLfloat fontcolor[3] = {1.0, 1.0, 0.0};
 
-static void reset(void);
-
-
-
-static void effect2_display_cb(void)
+void Effect2::drawFrame()
 {
 	int i;
 	double angle = 0.0;
@@ -166,7 +165,7 @@ static void effect2_display_cb(void)
 	frame_count++;
 }
 
-static void effect2_reshape_cb(int w, int h)
+void Effect2::resize(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -179,9 +178,6 @@ static void effect2_keyboard_cb(SDL_KeyboardEvent key)
 	switch (key.keysym.sym) {
 	case SDLK_b:
 		blend = !blend;
-		break;
-	case SDLK_r:
-		reset();
 		break;
 	case SDLK_x:
 		w[2] += 0.1;
@@ -215,7 +211,7 @@ static void effect2_keyboard_cb(SDL_KeyboardEvent key)
 }
 
 
-static void reset(void)
+void Effect2::reset()
 {
 	int i;
 	
@@ -246,12 +242,8 @@ void Effect2::cleanup()
 
 int effect2_register(struct effect *ep)
 {
-	ep->e_display  = effect2_display_cb;
-	ep->e_reshape  = effect2_reshape_cb;
         ep->e_keyboard = effect2_keyboard_cb;
-        /*ep->e_mouse    = effect2_mouse_cb;*/
 
-	ep->e_name     = effect2_name;
 	return 0;
 }
 

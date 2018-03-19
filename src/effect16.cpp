@@ -10,7 +10,10 @@
 #include "main.h"
 #include "stars.h"
 
-static string effect16_name = "\"Brownian\" motion";
+string Effect16::getName()
+{
+	return "\"Brownian\" motion";
+}
 
 /* state variables */
 
@@ -49,7 +52,7 @@ static GLfloat RNDINCR(void)
 }
 
 
-static void effect16_reset(void)
+void Effect16::reset()
 {
 	int i;
 	
@@ -60,12 +63,7 @@ static void effect16_reset(void)
 	my_z = MY_Z0;
 }
 
-
-
-
-
-
-static void effect16_display_cb(void)
+void Effect16::drawFrame()
 {
 	int i;
 	char s[256];
@@ -151,7 +149,7 @@ static void effect16_display_cb(void)
 	frame_count++;
 }
 
-static void effect16_reshape_cb(int w, int h)
+void Effect16::resize(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -159,18 +157,9 @@ static void effect16_reshape_cb(int w, int h)
 	gluPerspective(50.0, (GLdouble)w/(GLdouble)h, 0.1, 1000.0);
 }
 
-
-
-
-
-
-
 static void effect16_keyboard_cb(SDL_KeyboardEvent key)
 {
 	switch (key.keysym.sym) {
-	case SDLK_r:
-		effect16_reset();
-		break;
 	case SDLK_x:
 		w[2] += 0.1;
 		break;
@@ -180,13 +169,9 @@ static void effect16_keyboard_cb(SDL_KeyboardEvent key)
 
 	case SDLK_PAGEUP:
 		my_z -= 2.0;
-		if (my_z <= 0.0)
-			my_z = 0.0;
 		break;
 	case SDLK_PAGEDOWN:
 		my_z += 2.0;
-		if (my_z >= STARS_MINDIST)
-			my_z = STARS_MINDIST;
 		break;
 	case SDLK_LEFT:
 		w[1] -= 0.1;
@@ -226,11 +211,8 @@ void Effect16::cleanup()
 
 int effect16_register(struct effect *ep)
 {
-	ep->e_display  = effect16_display_cb;
-	ep->e_reshape  = effect16_reshape_cb;
 	ep->e_keyboard = effect16_keyboard_cb;
 
-	ep->e_name     = effect16_name;
 	return 0;
 }
 

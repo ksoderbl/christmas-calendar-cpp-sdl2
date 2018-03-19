@@ -15,7 +15,11 @@ using std::string;
 #include "texture.h"
 #include "vectormath.h"
 
-static string effect14_name = "Euro Stars";
+string Effect14::getName()
+{
+	return "Euro Stars";
+}
+
 static int frame_count   = 0;
 
 static int draw_normals  = 0;
@@ -77,7 +81,7 @@ static string texfilenames[NUMTEXTURES+1]  =
 static GLfloat fontcolor[3] = {1.0, 1.0, 1.0};
 
 
-static void effect14_reset(void)
+void Effect14::reset()
 {
 	int i;
 	
@@ -252,11 +256,7 @@ static void draw_star(void)
 	}
 }
 
-
-
-/* The function called when our window is resized
- * (which shouldn't happen, because we're fullscreen) */
-static void effect14_reshape_cb(int w, int h)
+void Effect14::resize(int w, int h)
 {
 	if (h == 0)
 		h = 1;
@@ -268,10 +268,7 @@ static void effect14_reshape_cb(int w, int h)
 	glMatrixMode(GL_MODELVIEW);
 }
 
-
-
-/* The function to draw the screendrawing function. */
-static void effect14_display_cb(void)
+void Effect14::drawFrame()
 {
 	char s[256];
 	int i, j;
@@ -419,9 +416,6 @@ static void effect14_keyboard_cb(SDL_KeyboardEvent key)
 	case SDLK_n:
 		draw_normals = !draw_normals;
 		break;
-	case SDLK_r:
-		effect14_reset();
-		break;
 	case SDLK_x:
 		w[2] += 0.1;
 		break;
@@ -515,7 +509,7 @@ int Effect14::init()
 	/* Set The Texture Generation Mode For T To Sphere Mapping */
 	glTexGeni(GL_T, GL_TEXTURE_GEN_MODE, GL_SPHERE_MAP);
 
-	effect14_reset();
+	reset();
 
 	return 0;
 }
@@ -537,11 +531,8 @@ void Effect14::cleanup()
 
 int effect14_register(struct effect *ep)
 {
-	ep->e_display  = effect14_display_cb;
-	ep->e_reshape  = effect14_reshape_cb;
 	ep->e_keyboard = effect14_keyboard_cb;
 
-	ep->e_name     = effect14_name;
 	return 0;
 }
 

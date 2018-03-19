@@ -6,7 +6,12 @@
 #include "stars.h"
 #include "util.h"
 
+#define STARS_MAXDIST 500.0
+#define STARS_MINDIST 200.0
+#define STARS_NUM 20000
+
 static GLdouble stars[STARS_NUM][3];
+static GLdouble starColors[STARS_NUM][3];
 
 void stars_make(void)
 {
@@ -28,20 +33,29 @@ void stars_make(void)
 		stars[i][0] = x;
 		stars[i][1] = y;
 		stars[i][2] = z;
+
+		starColors[i][0] = randdouble() * 0.5;
+		starColors[i][1] = randdouble() * 0.5;
+		starColors[i][2] = randdouble() * 0.5;
 	}
 }
 
 void stars_draw(void)
 {
 	int i;
+	double r, g, b;
 
 	glPushMatrix();
 	/* make sure we are always in the middle */
 	/*glTranslatef(0.0, 0.0, my_z);*/
-	glColor4f(0.7, 0.8, 1.0, 1.0);
 	glBegin(GL_POINTS);
-	for (i = 0; i < STARS_NUM; i++)
+	for (i = 0; i < STARS_NUM; i++) {
+		r = starColors[i][0];
+		g = starColors[i][1];
+		b = starColors[i][2];
+		glColor4d(r, g, b, 1.0);
 		glVertex3dv(&stars[i][0]);
+	}
 	glEnd();
 	glPopMatrix();
 }

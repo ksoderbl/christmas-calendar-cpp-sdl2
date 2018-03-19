@@ -13,7 +13,10 @@
 
 static int frame_count = 0; /* frames drawn */
 
-static string effect21_name = "Stars only";
+string Effect21::getName()
+{
+	return "Stars only";
+}
 
 /*static GLdouble width=0.0, height=0.0;*/
 static GLfloat rot[3] = {0.0, 0.0, 0.0};
@@ -24,7 +27,7 @@ static GLfloat my_z = MY_Z0;
 
 static GLfloat fontcolor[3] = {1.0, 1.0, 0.0};
 
-static void effect21_display_cb(void)
+void Effect21::drawFrame()
 {
 	int i;
 	char s[256];
@@ -72,7 +75,7 @@ static void effect21_display_cb(void)
 	frame_count++;
 }
 
-static void effect21_reshape_cb(int w, int h)
+void Effect21::resize(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -90,15 +93,14 @@ int Effect21::init()
 
 void Effect21::cleanup()
 {
+}
 
+void Effect21::reset()
+{
 }
 
 int effect21_register(struct effect *ep)
 {
-	ep->e_display  = effect21_display_cb;
-	ep->e_reshape  = effect21_reshape_cb;
-
-	ep->e_name     = effect21_name;
 	return 0;
 }
 

@@ -38,7 +38,10 @@ static void calendar_reset_hatches(void);
 
 static int frame_count = 0; /* frames drawn */
 
-static string calendar_name = "Christmas calendar";
+string CalendarEffect::getName()
+{
+	return "Christmas calendar";
+}
 
 static int use_texture   = 1;
 static int use_lighting  = 1;
@@ -449,7 +452,7 @@ void draw_calendar(GLenum mode)
 
 
 
-void calendar_reset(void)
+void CalendarEffect::reset()
 {
 	calendar_reset_hatches();
 }
@@ -566,11 +569,7 @@ void calendar_idle_cb(void)
 	}
 }
 
-
-
-
-
-static void calendar_display_cb(void)
+void CalendarEffect::drawFrame()
 {
 	char s[256];
 	double up_phi, up_theta;
@@ -626,9 +625,7 @@ static void calendar_display_cb(void)
 	frame_count++;
 }
 
-
-
-static void calendar_reshape_cb(int w, int h)
+void CalendarEffect::resize(int w, int h)
 {
 	if (h == 0)
 		h = 1;
@@ -682,9 +679,6 @@ static void calendar_keyboard_cb(SDL_KeyboardEvent key)
 		break;
 	case SDLK_c:
 		use_culling = !use_culling;
-		break;
-	case SDLK_r:
-		calendar_reset();
 		break;
 	case SDLK_q:
 	case SDLK_ESCAPE:
@@ -941,7 +935,7 @@ static void calendar_init_lights(void)
 
 /* ---------------------------------------------------------------------- */
 
-int Effect0::init()
+int CalendarEffect::init()
 {
 	int e;
 
@@ -968,7 +962,7 @@ int Effect0::init()
 	return 0;
 }
 
-void Effect0::cleanup()
+void CalendarEffect::cleanup()
 {
 #if CALENDAR_CLEANUP_TEXTURES
 	calendar_cleanup_textures();
@@ -981,12 +975,9 @@ void Effect0::cleanup()
 /* mandatory registration func */
 int effect0_register(struct effect *ep)
 {
-	ep->e_display  = calendar_display_cb;
-        ep->e_reshape  = calendar_reshape_cb;
         ep->e_keyboard = calendar_keyboard_cb;
         ep->e_mouse    = calendar_mouse_cb;
         ep->e_idle     = calendar_idle_cb;
-	ep->e_name     = calendar_name;
 	return 0;
 }
 

@@ -19,7 +19,10 @@ static int lookat0 = 0;
 
 static int frame_count = 0; /* frames drawn */
 
-static string effect17_name = "Spotlight";
+string Effect17::getName()
+{
+	return "Spotlight";
+}
 
 /* number of lights */
 #define LT_N 3
@@ -81,7 +84,7 @@ static GLuint list;
 
 
 
-static void reset(void)
+void Effect17::reset()
 {
 }
 
@@ -176,7 +179,7 @@ static void make_list(int make)
 
 static GLdouble lt[3] = {0.00015, 0.00014, 0.00004};
 
-static void effect17_display_cb(void)
+void Effect17::drawFrame()
 {
 	int i;
 	double vv;
@@ -317,9 +320,7 @@ static void effect17_display_cb(void)
 	frame_count++;
 }
 
-
-
-static void effect17_reshape_cb(int w, int h)
+void Effect17::resize(int w, int h)
 {
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
@@ -376,9 +377,6 @@ static void effect17_keyboard_cb(SDL_KeyboardEvent key)
 		break;
 	case SDLK_b:
 		blend = !blend;
-		break;
-	case SDLK_r:
-		reset();
 		break;
 	case SDLK_x:
 		break;
@@ -441,11 +439,8 @@ void Effect17::cleanup()
 
 int effect17_register(struct effect *ep)
 {
-	ep->e_display  = effect17_display_cb;
-        ep->e_reshape  = effect17_reshape_cb;
         ep->e_keyboard = effect17_keyboard_cb;
         ep->e_motion   = effect17_motion_cb;
 
-	ep->e_name     = effect17_name;
 	return 0;
 }
