@@ -27,11 +27,6 @@ static clock_t t_old;
 static void print_string(void *font, string s);
 static double get_fps(int count);
 
-
-
-
-
-
 void messages_toggle(void)
 {
 	messages_are_on = !messages_are_on;
@@ -98,12 +93,13 @@ void messages_print(char *s, int count, GLfloat fontcolor[3])
 		print_string(font, ename);
 	}
 
-	
+	/* TODO:
 	if (pause_is_requested()) {
 		glColor3fv(fontcolor);
 		glRasterPos2i(width-100-msgx+1, height-msgy+1);
 		print_string(font, string("pause"));
 	}
+	*/
 
 	/* restore modelview and projection matrices */
 	glPopMatrix();

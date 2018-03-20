@@ -352,15 +352,10 @@ void Effect3::drawFrame()
 	glPopMatrix();
 
 	glDisable(GL_LIGHTING);
-	if (messages_on() || pause_is_requested()) {
+	if (messages_on()) {
 		sprintf(s, "w0: %.1f w1: %.1f w2: %.1f", w[0], w[1], w[2]);
 		messages_print(s, frame_count, fontcolor);
 	}
-
-	/* activate pause if requested */
-	if (pause_is_requested())
-		pause_activate();
-
 
 	frame_count++;
 }
@@ -373,8 +368,15 @@ void Effect3::resize(int w, int h)
 	gluPerspective(60.0, (GLdouble)w/(GLdouble)h, 0.1, 1000.0);
 }
 
+void Effect3::mouseButtonDownEvent(SDL_MouseButtonEvent button)
+{
+}
 
-static void effect3_keyboard_cb(SDL_KeyboardEvent key)
+void Effect3::mouseMotionEvent(SDL_MouseMotionEvent motion)
+{
+}
+
+void Effect3::keyboardEvent(SDL_KeyboardEvent key)
 {
   	switch (key.keysym.sym) {
 	case SDLK_b:
@@ -423,11 +425,4 @@ int Effect3::init()
 void Effect3::cleanup()
 {
 	free_tables();
-}
-
-int effect3_register(struct effect *ep)
-{
-        ep->e_keyboard = effect3_keyboard_cb;
-
-	return 0;
 }

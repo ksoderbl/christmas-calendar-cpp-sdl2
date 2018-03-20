@@ -400,7 +400,7 @@ void Effect24::drawFrame()
 
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
-	if (messages_on() || pause_is_requested()) {
+	if (messages_on()) {
 		sprintf(s,
 			"pos={%.2f, %.2f, %.2f} "
 			"phi=%.2f theta=%.2f ",
@@ -430,12 +430,6 @@ void Effect24::drawFrame()
 	if (gamma2 < 0.0)
 		gamma2 += 2.0*M_PI;
 
-
-
-
-	/* activate pause if requested */
-	if (pause_is_requested())
-		pause_activate();
 	frame_count++;
 }
 
@@ -447,9 +441,13 @@ void Effect24::resize(int w, int h)
 	gluPerspective(60.0, (GLdouble)w/(GLdouble)h, 0.1, 1000.0);
 }
 
+void Effect24::mouseButtonDownEvent(SDL_MouseButtonEvent button)
+{
+}
+
 static int oldx = 0, oldy = 0;
 #define MAX 6
-static void effect24_motion_cb(SDL_MouseMotionEvent motion)
+void Effect24::mouseMotionEvent(SDL_MouseMotionEvent motion)
 {
 	int x, y;
 	int dx, dy;
@@ -483,8 +481,7 @@ static void effect24_motion_cb(SDL_MouseMotionEvent motion)
 	oldy = y;
 }
 
-
-static void effect24_keyboard_cb(SDL_KeyboardEvent key)
+void Effect24::keyboardEvent(SDL_KeyboardEvent key)
 {
 	int i;
 	
@@ -686,12 +683,4 @@ void Effect24::cleanup()
 	glDeleteLists(list[0], 1);
 	glDeleteLists(list[1], 1);
 #endif
-}
-
-int effect24_register(struct effect *ep)
-{
-        ep->e_keyboard = effect24_keyboard_cb;
-        ep->e_motion   = effect24_motion_cb;
-
-	return 0;
 }

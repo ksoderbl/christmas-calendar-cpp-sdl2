@@ -190,14 +190,10 @@ void Effect4::drawFrame()
 
 	stars_draw();
 
-	if (messages_on() || pause_is_requested()) {
+	if (messages_on()) {
 		sprintf(s, " ");
 		messages_print(s, frame_count, fontcolor);
 	}
-
-	/* activate pause if requested */
-	if (pause_is_requested())
-		pause_activate();
 
 	frame_count++;
 }
@@ -210,7 +206,15 @@ void Effect4::resize(int w, int h)
 	gluPerspective(45.0, (GLdouble)w/(GLdouble)h, 0.1, 1000.0);
 }
 
-static void effect4_keyboard_cb(SDL_KeyboardEvent key)
+void Effect4::mouseButtonDownEvent(SDL_MouseButtonEvent button)
+{
+}
+
+void Effect4::mouseMotionEvent(SDL_MouseMotionEvent motion)
+{
+}
+
+void Effect4::keyboardEvent(SDL_KeyboardEvent key)
 {
 	switch (key.keysym.sym) {
 	case SDLK_SPACE:
@@ -273,11 +277,4 @@ int Effect4::init()
 void Effect4::cleanup()
 {
 	glDeleteLists(list, 1);
-}
-
-int effect4_register(struct effect *ep)
-{
-	ep->e_keyboard = effect4_keyboard_cb;
-
-	return 0;
 }

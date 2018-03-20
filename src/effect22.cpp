@@ -141,14 +141,10 @@ void Effect22::drawFrame()
 
 	stars_draw();
 
-	if (messages_on() || pause_is_requested()) {
+	if (messages_on()) {
 		sprintf(s, "w0: %.1f w1: %.1f w2: %.1f", w[0], w[1], w[2]);
 		messages_print(s, frame_count, fontcolor);
 	}
-
-	/* activate pause if requested */
-	if (pause_is_requested())
-		pause_activate();
 
 	/* switch color every 50 frames */
 	if (!(frame_count % 50))
@@ -165,7 +161,15 @@ void Effect22::resize(int w, int h)
 	gluPerspective(50.0, (GLdouble)w/(GLdouble)h, 0.1, 1000.0);
 }
 
-static void effect22_keyboard_cb(SDL_KeyboardEvent key)
+void Effect22::mouseButtonDownEvent(SDL_MouseButtonEvent button)
+{
+}
+
+void Effect22::mouseMotionEvent(SDL_MouseMotionEvent motion)
+{
+}
+
+void Effect22::keyboardEvent(SDL_KeyboardEvent key)
 {
 	switch (key.keysym.sym) {
 	case SDLK_SPACE:
@@ -256,12 +260,4 @@ int Effect22::init()
 void Effect22::cleanup()
 {
 
-}
-
-
-int effect22_register(struct effect *ep)
-{
-	ep->e_keyboard = effect22_keyboard_cb;
-
-	return 0;
 }

@@ -9,14 +9,11 @@ using std::string;
 #include "main.h"
 #include "quit.h"
 
-static string quit_message = "Really Quit ? (y/n)";
-static int quitting = 0;
-
 /*
  * To use this remember to set orthogonal perspective
  */
 
-
+#if 0
 static void print_string(void *font, string s)
 {
 	int len, i;
@@ -30,14 +27,11 @@ static void print_string(void *font, string s)
 
 	cout << s << endl;
 }
-
-int quit_is_requested(void)
-{
-	return quitting;
-}
+#endif
 
 void quit_message_print(void)
 {
+#if 0
 	GLint vp[4];
 	GLdouble width=0.0, height=0.0;
 	GLint msgx, msgy;
@@ -67,27 +61,6 @@ void quit_message_print(void)
 	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
+#endif
 }
 
-
-static void quit_keyboard_cb(SDL_KeyboardEvent key)
-{
-	switch (key.keysym.sym) {
-	case SDLK_y:
-		exit(0);
-	case SDLK_n:
-	case SDLK_ESCAPE:
-		quitting = 0;
-		calendar_restore_main_callbacks();
-		break;
-	default:
-		break;
-	}
-}
-
-void quit_request(void)
-{
-	cout << quit_message << "\n";
-	quitting = 1;
-	mainKeyboardFunc(quit_keyboard_cb);
-}

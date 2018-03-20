@@ -16,6 +16,15 @@
 #include "vectormath.h"
 #include "quit.h"
 
+static string quit_message = "Really Quit ? (y/n)";
+static bool quitting = false;
+
+void quit_request(void)
+{
+	cout << quit_message << "\n";
+	quitting = true;
+}
+
 static void calendar_reset_hatches(void);
 
 #define RAD2DEG(x) ((180.0 * (x))/M_PI)
@@ -542,7 +551,7 @@ void calendar_idle_cb(void)
 	struct hatch *hp;
 	int newtime;
 
-	//cout << "calendar_idle_cb(), effect_to_run = " << effect_to_run << endl;
+	///cout << "calendar_idle_cb(), effect_to_run = " << effect_to_run << endl;
 
 	/* check if we need to run another effect */
 	/* this is really ugly, but was programmed in haste */
@@ -606,7 +615,7 @@ void CalendarEffect::drawFrame()
 
 	draw_scene(GL_RENDER);
 
-	if (messages_on() || pause_is_requested()) {
+	if (messages_on()) {
 		sprintf(s,
 			"pos={%.2f, %.2f, %.2f} "
 			"phi=%.2f theta=%.2f ",
@@ -615,12 +624,8 @@ void CalendarEffect::drawFrame()
 		messages_print(s, frame_count, fontcolor);
 	}
 
-	if (quit_is_requested())
+	if (quitting)
 		quit_message_print();
-
-	/* activate pause if requested */
-	if (pause_is_requested())
-		pause_activate();
 
 	frame_count++;
 }
@@ -642,7 +647,7 @@ void CalendarEffect::resize(int w, int h)
 }
 
 
-static void calendar_mouse_cb(SDL_MouseButtonEvent button)
+void CalendarEffect::mouseButtonDownEvent(SDL_MouseButtonEvent button)
 {
 	int hit;
 	int x = button.x;
@@ -657,13 +662,27 @@ static void calendar_mouse_cb(SDL_MouseButtonEvent button)
 	process_hit(hit);
 }
 
+void CalendarEffect::mouseMotionEvent(SDL_MouseMotionEvent motion)
+{
+}
 
-
-
-
-static void calendar_keyboard_cb(SDL_KeyboardEvent key)
+void CalendarEffect::keyboardEvent(SDL_KeyboardEvent key)
 {
 	int i, effect = 0;
+
+	if (quitting) {
+		switch (key.keysym.sym) {
+		case SDLK_y:
+			exit(0);
+		case SDLK_n:
+		case SDLK_ESCAPE:
+			quitting = false;
+			break;
+		default:
+			break;
+		}
+		return;
+	}
   
 	switch (key.keysym.sym) {
 	case SDLK_l:
@@ -679,10 +698,6 @@ static void calendar_keyboard_cb(SDL_KeyboardEvent key)
 		break;
 	case SDLK_c:
 		use_culling = !use_culling;
-		break;
-	case SDLK_q:
-	case SDLK_ESCAPE:
-		quit_request();
 		break;
 
 	case SDLK_F1:  effect = 1;  break;
@@ -967,24 +982,4 @@ void CalendarEffect::cleanup()
 #if CALENDAR_CLEANUP_TEXTURES
 	calendar_cleanup_textures();
 #endif
-}
-
-
-/* ---------------------------------------------------------------------- */
-
-/* mandatory registration func */
-int effect0_register(struct effect *ep)
-{
-        ep->e_keyboard = calendar_keyboard_cb;
-        ep->e_mouse    = calendar_mouse_cb;
-        ep->e_idle     = calendar_idle_cb;
-	return 0;
-}
-
-
-/* restore callbacks after quit request */
-void calendar_restore_main_callbacks(void)
-{
-	mainKeyboardFunc(calendar_keyboard_cb);
-	mainMouseFunc(calendar_mouse_cb);
 }

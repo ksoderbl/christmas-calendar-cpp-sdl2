@@ -48,11 +48,8 @@ void mainMouseFunc(effect_mouse_func func)
 static void main_idle_cb(void);
 static void main_flash(void);
 
-int dummy=0; /* don't change, see main.h */
-
 /* ---------------------------------------------------------------------- */
 
-static struct effect effects[NUMEFFECTS] = {0, };
 static Effect *effect_objects[NUMEFFECTS] = {0, };
 int currentEffectIndex = -1;
 static Effect *currentEffect = 0;
@@ -60,7 +57,7 @@ bool pausing = false;
 
 int init_effects(void)
 {
-	int err = 0, ei;
+	int ei;
 	
 	effect_objects[0] = new CalendarEffect();
 	effect_objects[1] = new Effect1();
@@ -88,43 +85,8 @@ int init_effects(void)
 	effect_objects[23] = new Effect23();
 	effect_objects[24] = new Effect24();
 
-	effects[0].e_register  = effect0_register;
-	effects[1].e_register  = effect1_register;
-	effects[2].e_register  = effect2_register;
-	effects[3].e_register  = effect3_register;
-	effects[4].e_register  = effect4_register;
-	effects[5].e_register  = effect5_register;
-	effects[6].e_register  = effect6_register;
-	effects[7].e_register  = effect7_register;
-	effects[8].e_register  = effect8_register;
-	effects[9].e_register  = effect9_register;
-	effects[10].e_register = effect10_register;
-	effects[11].e_register = effect11_register;
-	effects[12].e_register = effect12_register;
-	effects[13].e_register = effect13_register;
-	effects[14].e_register = effect14_register;
-	effects[15].e_register = effect15_register;
-	effects[16].e_register = effect16_register;
-	effects[17].e_register = effect17_register;
- 	effects[18].e_register = effect18_register;
-	effects[19].e_register = effect19_register;
-	effects[20].e_register = effect20_register;
-	effects[21].e_register = effect21_register;
-	effects[22].e_register = effect22_register;
-	effects[23].e_register = effect23_register;
-	effects[24].e_register = effect24_register;
-
-	/*
-	 * call all effect registration functions to get function pointers
-	 * to their init, main and cleanup functions
-	 */
 	for (ei = 0; ei < NUMEFFECTS; ei++) {
-		err = (*effects[ei].e_register)(&effects[ei]);
-		//if (err < 0) {
-		//	cerr << "registration of effect " << ei << " is a stub" << endl;
-		//} else {
 		cout << "effect" << ei << "name: " << effect_objects[ei]->getName() << "\n";
-		//}
 	}
 
 	stars_make();
@@ -242,7 +204,7 @@ void main_run_effect(int ei)
 	}
 
 	glGetIntegerv(GL_VIEWPORT, vp);
-	//(*effects[ei].e_reshape)((int)vp[2], (int)vp[3]);
+
 	effect_objects[ei]->resize((int)vp[2], (int)vp[3]);
 
 	next_effect = ei;
@@ -250,36 +212,26 @@ void main_run_effect(int ei)
 	main_flash();
 }
 
-void main_resume_effect(void)
+void main_set_current_effect_index(int ei)
 {
-	struct effect *ep = &effects[currentEffectIndex];
-	int w, h;
-
-	w = pause_reshape_width;
-	h = pause_reshape_height;
-
-	main_set_callbacks(ep, w, h);
-}
-
-
-void main_set_callbacks(struct effect *ep, int w, int h)
-{
-	if (!ep) {
-		cerr << "main_set_callbacks: ep NULL\n";
+	if (ei < 0) {
+		cerr << "main_set_current_effect_index: ei < 0\n";
+		exit(1);
+	}
+	if (ei >= NUMEFFECTS ) {
+		cerr << "main_set_current_effect_index: ei >= NUMEFFECTS\n";
 		exit(1);
 	}
 
-	displayFunc = ep->e_display;
-	reshapeFunc = ep->e_reshape;
-	keyboardFunc = ep->e_keyboard;
-	mouseFunc = ep->e_mouse;
-	motionFunc = ep->e_motion;
-	idleFunc = ep->e_idle;
+	currentEffectIndex = ei;
+	currentEffect = effect_objects[currentEffectIndex];
 	
-	/* if we resized during pause */
-	if (w != -1) {
-		//TODO (ep->e_reshape)(w, h);
-	}
+	displayFunc = 0;
+	reshapeFunc = 0;
+	keyboardFunc = 0;
+	mouseFunc = 0;
+	motionFunc = 0;
+	idleFunc = 0;
 }
 
 /* 
@@ -290,17 +242,10 @@ void main_set_callbacks(struct effect *ep, int w, int h)
 static void run_next_effect(void)
 {
 	int ei;
-	struct effect *ep;
 
 	ei = next_effect;
-	ep = &effects[ei];
 
-	/* set the effect as the current effect */
-	currentEffectIndex = ei;
-	currentEffect = effect_objects[currentEffectIndex];
-
-	/* set the callback, activating the new effect */
-	main_set_callbacks(ep, -1, -1);
+	main_set_current_effect_index(ei);
 }
 
 
@@ -369,12 +314,7 @@ static void main_idle_cb(void)
 
 static void handle_keydown(SDL_KeyboardEvent key)
 {
-	//Effect *ep = 0;
-	
 	cout << "KEYDOWN, current effect = " << currentEffectIndex << endl;
-
-	//if (currentEffectIndex >= 0)
-	//	ep = effect_objects[currentEffectIndex];
 
 	if (pausing) {
 		cout << "pause keyboard cb\n";
@@ -386,7 +326,6 @@ static void handle_keydown(SDL_KeyboardEvent key)
 		case SDLK_PAUSE:
 		case SDLK_ESCAPE:
 			pausing = false;
-			main_resume_effect();
 			break;
 		default:
 			break;
@@ -413,7 +352,7 @@ static void handle_keydown(SDL_KeyboardEvent key)
 
 	case SDLK_p:
 	case SDLK_PAUSE:
-		pause_request();
+		// TODO: pause_request();
 		break;
 	case SDLK_r:
 		if (currentEffect)
@@ -421,8 +360,8 @@ static void handle_keydown(SDL_KeyboardEvent key)
 		break;
 
 	default:
-		if (keyboardFunc)
-			(*keyboardFunc)(key);
+		if (currentEffect)
+			currentEffect->keyboardEvent(key);
 	}
 }
 
@@ -453,15 +392,16 @@ void main_loop(void)
 
 			else if (event.type == SDL_MOUSEBUTTONDOWN)
 			{
-				if (mouseFunc)
-					(*mouseFunc)(event.button);
+				cout << "mouse button down, current effect is " << currentEffectIndex << endl;
+				if (currentEffect)
+					currentEffect->mouseButtonDownEvent(event.button);
 			}
 
 			else if (event.type == SDL_MOUSEMOTION)
 			{
 				if (event.motion.state & SDL_BUTTON_LMASK) {
-					if (motionFunc)
-						(*motionFunc)(event.motion);
+					if (currentEffect)
+						currentEffect->mouseMotionEvent(event.motion);
 				}
 			}
 			
@@ -474,9 +414,7 @@ void main_loop(void)
 					w = event.window.data1;
 					h = event.window.data2;
 					
-					if (reshapeFunc)
-						(*reshapeFunc)(w, h);
-					else if (currentEffect)
+					if (currentEffect)
 						currentEffect->resize(w, h);
 					break;
 				default:
@@ -496,7 +434,8 @@ void main_loop(void)
 			//cout << "idle func is calendar idle cb" << endl;
 			calendar_idle_cb();
 		} else if (idleFunc == 0) {
-			;
+			//cout << "idle func is 0" << endl;
+			calendar_idle_cb();
 		} else {
 			cout << "idle func is " << idleFunc << endl;
 			assert(false);
@@ -515,8 +454,8 @@ void main_loop(void)
 int main(int argc, char *argv[])
 {
 	init_effects();
+
 	srand(time(NULL));
-	dummy = 0;
 	
 	init_sdl();
 

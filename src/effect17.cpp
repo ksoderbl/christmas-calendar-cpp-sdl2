@@ -308,15 +308,12 @@ void Effect17::drawFrame()
 
 
 	stars_draw();
-	if (messages_on() || pause_is_requested()) {
+	if (messages_on()) {
 		sprintf(s, "pos: %.2f %.2f %.2f phi %.2f theta %.2f ",
 			pos[0], pos[1], pos[2], phi, theta);
 		messages_print(s, frame_count, fontcolor);
 	}
 
-	/* activate pause if requested */
-	if (pause_is_requested())
-		pause_activate();
 	frame_count++;
 }
 
@@ -328,9 +325,14 @@ void Effect17::resize(int w, int h)
 	gluPerspective(60.0, (GLdouble)w/(GLdouble)h, 0.1, 1000.0);
 }
 
+void Effect17::mouseButtonDownEvent(SDL_MouseButtonEvent button)
+{
+}
+
 static int oldx = 0, oldy = 0;
 #define MAX 6
-static void effect17_motion_cb(SDL_MouseMotionEvent motion)
+
+void Effect17::mouseMotionEvent(SDL_MouseMotionEvent motion)
 {
 	int x, y;
 	int dx, dy;
@@ -361,7 +363,7 @@ static void effect17_motion_cb(SDL_MouseMotionEvent motion)
 }
 
 
-static void effect17_keyboard_cb(SDL_KeyboardEvent key)
+void Effect17::keyboardEvent(SDL_KeyboardEvent key)
 {
 	int i;
   
@@ -435,12 +437,4 @@ int Effect17::init()
 void Effect17::cleanup()
 {
 	glDeleteLists(list, 1);
-}
-
-int effect17_register(struct effect *ep)
-{
-        ep->e_keyboard = effect17_keyboard_cb;
-        ep->e_motion   = effect17_motion_cb;
-
-	return 0;
 }

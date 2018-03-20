@@ -381,22 +381,24 @@ void Effect14::drawFrame()
 	
 	glDisable(GL_LIGHTING);
 	glDisable(GL_DEPTH_TEST);
-	if (messages_on() || pause_is_requested()) {
+	if (messages_on()) {
 		sprintf(s, " ");
 		messages_print(s, frame_count, fontcolor);
 	}
-
-	/* activate pause if requested */
-	if (pause_is_requested())
-		pause_activate();
 
 	frame_count++;
 
 }
 
+void Effect14::mouseButtonDownEvent(SDL_MouseButtonEvent button)
+{
+}
 
+void Effect14::mouseMotionEvent(SDL_MouseMotionEvent motion)
+{
+}
 
-static void effect14_keyboard_cb(SDL_KeyboardEvent key)
+void Effect14::keyboardEvent(SDL_KeyboardEvent key)
 {
 	switch (key.keysym.sym) {
 	case SDLK_SPACE:
@@ -528,11 +530,3 @@ void Effect14::cleanup()
 {
 	cleanup_textures();
 }
-
-int effect14_register(struct effect *ep)
-{
-	ep->e_keyboard = effect14_keyboard_cb;
-
-	return 0;
-}
-

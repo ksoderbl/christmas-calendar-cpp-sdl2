@@ -174,16 +174,12 @@ void Effect8::drawFrame()
 
 	stars_draw();
 
-	if (messages_on() || pause_is_requested()) {
+	if (messages_on()) {
 		sprintf(s, "field of view is %.2f degrees"
 			" (press 'z' or 'x' to adjust)", 
 			x_fovy);
 		messages_print(s, frame_count, fontcolor);
 	}
-
-	/* activate pause if requested */
-	if (pause_is_requested())
-		pause_activate();
 
 	frame_count++;
 }
@@ -199,7 +195,15 @@ void Effect8::resize(int w, int h)
 	gluPerspective(x_fovy, (GLdouble)w/(GLdouble)h, 0.1, 1000.0);
 }
 
-static void effect8_keyboard_cb(SDL_KeyboardEvent key)
+void Effect8::mouseButtonDownEvent(SDL_MouseButtonEvent button)
+{
+}
+
+void Effect8::mouseMotionEvent(SDL_MouseMotionEvent motion)
+{
+}
+
+void Effect8::keyboardEvent(SDL_KeyboardEvent key)
 {
 	switch (key.keysym.sym) {
 	case SDLK_SPACE:
@@ -257,12 +261,3 @@ void Effect8::cleanup()
 {
 
 }
-
-int effect8_register(struct effect *ep)
-{
-	ep->e_keyboard = effect8_keyboard_cb;
-
-	return 0;
-}
-
-

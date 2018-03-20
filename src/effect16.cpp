@@ -137,14 +137,10 @@ void Effect16::drawFrame()
 
 	stars_draw();  /* stars.h */
 
-	if (messages_on() || pause_is_requested()) {
+	if (messages_on()) {
 		sprintf(s, "number of vertices: %d", numpoints);
 		messages_print(s, frame_count, fontcolor);
 	}
-
-	/* activate pause if requested */
-	if (pause_is_requested())
-		pause_activate();
 
 	frame_count++;
 }
@@ -157,7 +153,15 @@ void Effect16::resize(int w, int h)
 	gluPerspective(50.0, (GLdouble)w/(GLdouble)h, 0.1, 1000.0);
 }
 
-static void effect16_keyboard_cb(SDL_KeyboardEvent key)
+void Effect16::mouseButtonDownEvent(SDL_MouseButtonEvent button)
+{
+}
+
+void Effect16::mouseMotionEvent(SDL_MouseMotionEvent motion)
+{
+}
+
+void Effect16::keyboardEvent(SDL_KeyboardEvent key)
 {
 	switch (key.keysym.sym) {
 	case SDLK_x:
@@ -208,11 +212,3 @@ void Effect16::cleanup()
 {
 
 }
-
-int effect16_register(struct effect *ep)
-{
-	ep->e_keyboard = effect16_keyboard_cb;
-
-	return 0;
-}
-

@@ -478,7 +478,7 @@ void Effect20::drawFrame()
 	}
 
 	glColor4f(1.0, 1.0, 1.0, 1.0);
-	if (messages_on() || pause_is_requested()) {
+	if (messages_on()) {
 		sprintf(s, "1st light %s, 2nd light %s, 3rd light %s",
 			light0_on ? " on": "off",
 			light1_on ? " on": "off",
@@ -486,9 +486,6 @@ void Effect20::drawFrame()
 		messages_print(s, frame_count, fontcolor);
 	}
 
-	/* activate pause if requested */
-	if (pause_is_requested())
-		pause_activate();
 	frame_count++;
 }
 
@@ -500,9 +497,13 @@ void Effect20::resize(int w, int h)
 	gluPerspective(60.0, (GLdouble)w/(GLdouble)h, 0.1, 1000.0);
 }
 
+void Effect20::mouseButtonDownEvent(SDL_MouseButtonEvent button)
+{
+}
+
 static int oldx = 0, oldy = 0;
 #define MAX 6
-static void effect20_motion_cb(SDL_MouseMotionEvent motion)
+void Effect20::mouseMotionEvent(SDL_MouseMotionEvent motion)
 {
 	int x, y;
 	int dx, dy;
@@ -533,8 +534,7 @@ static void effect20_motion_cb(SDL_MouseMotionEvent motion)
 	oldy = y;
 }
 
-
-static void effect20_keyboard_cb(SDL_KeyboardEvent key)
+void Effect20::keyboardEvent(SDL_KeyboardEvent key)
 {
 	int i;
 
@@ -747,12 +747,4 @@ void Effect20::cleanup()
 	glDeleteLists(list[0], 1);
 	glDeleteLists(list[1], 1);
 #endif
-}
-
-int effect20_register(struct effect *ep)
-{
-        ep->e_keyboard = effect20_keyboard_cb;
-        ep->e_motion   = effect20_motion_cb;
-
-	return 0;
 }

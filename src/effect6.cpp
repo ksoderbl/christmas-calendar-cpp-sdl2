@@ -676,17 +676,13 @@ void Effect6::drawFrame()
 
 
 
-	if (messages_on() || pause_is_requested()) {
+	if (messages_on()) {
 		sprintf(s, "[s]had:%d [t]ex:%d [l]lght:%d"
 			" [w]ire:%d [W]ind:%d [f]lag:%d\n",
 			use_flat_shading, use_texture, use_lighting,
 			use_wireframe, use_wind, current_flag);
 		messages_print(s, frame_count, fontcolor);
 	}
-
-	/* activate pause if requested */
-	if (pause_is_requested())
-		pause_activate();
 
 	frame_count++;
 }
@@ -699,7 +695,15 @@ void Effect6::resize(int w, int h)
 	gluPerspective(50.0, (GLdouble)w/(GLdouble)h, 0.1, 1000.0);
 }
 
-static void effect6_keyboard_cb(SDL_KeyboardEvent key)
+void Effect6::mouseButtonDownEvent(SDL_MouseButtonEvent button)
+{
+}
+
+void Effect6::mouseMotionEvent(SDL_MouseMotionEvent motion)
+{
+}
+
+void Effect6::keyboardEvent(SDL_KeyboardEvent key)
 {
 	switch (key.keysym.sym) {
 	case SDLK_s:
@@ -909,11 +913,4 @@ void Effect6::cleanup()
 	gluDeleteQuadric(qp);
 
 	f_initialized = 0;
-}
-
-int effect6_register(struct effect *ep)
-{
-	ep->e_keyboard = effect6_keyboard_cb;
-
-	return 0;
 }

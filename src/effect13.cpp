@@ -63,14 +63,10 @@ void Effect13::drawFrame()
 	glDisable(GL_LIGHTING);
 
 	/* handle text to user and pause */
-	if (messages_on() || pause_is_requested()) {
+	if (messages_on()) {
 		sprintf(s, "w0: %.1f w1: %.1f w2: %.1f", w[0], w[1], w[2]);
 		messages_print(s, frame_count, fontcolor);
 	}
-
-	/* activate pause if requested */
-	if (pause_is_requested())
-		pause_activate();
 
 	frame_count++;
 }
@@ -81,6 +77,18 @@ void Effect13::resize(int w, int h)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(50.0, (GLdouble)w/(GLdouble)h, 0.1, 1000.0);
+}
+
+void Effect13::mouseButtonDownEvent(SDL_MouseButtonEvent button)
+{
+}
+
+void Effect13::mouseMotionEvent(SDL_MouseMotionEvent motion)
+{
+}
+
+void Effect13::keyboardEvent(SDL_KeyboardEvent key)
+{
 }
 
 int Effect13::init()
@@ -98,11 +106,3 @@ void Effect13::cleanup()
 void Effect13::reset()
 {
 }
-
-int effect13_register(struct effect *ep)
-{
-	return 0;
-}
-
-
-
