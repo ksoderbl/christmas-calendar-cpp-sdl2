@@ -126,8 +126,8 @@ static GLenum q_texcoords   [] = { GL_FALSE,    GL_TRUE     };
 static texture_t *texture[NUMTEXTURES+1] = { 0, };
 static string texfilenames[NUMTEXTURES+1]  =
 {
-	DATADIR "/sandstone.rgb",
-	DATADIR "/bluestone.rgb",
+	DATADIR "/sandstone.png",
+	DATADIR "/bluestone.png",
 	""
 };
 

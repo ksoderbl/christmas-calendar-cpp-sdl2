@@ -115,10 +115,10 @@ static int textures_initialized = 0;
 static texture_t *texture[NUMTEXTURES+1] = { 0, };
 static string texfilenames[NUMTEXTURES+1]  =
 {
-	DATADIR "/julmust.rgb",
-	DATADIR "/numbers.rgb",
-	DATADIR "/effects.rgb",
-	DATADIR "/tux.rgb",
+	DATADIR "/julmust.png",
+	DATADIR "/numbers.png",
+	DATADIR "/effects.png",
+	DATADIR "/tux.png",
 	""
 };
 

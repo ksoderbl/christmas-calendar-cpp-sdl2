@@ -55,10 +55,10 @@ static texture_t *textures[NUMTEXTURES+1] = { 0, };
 /* first NUMFLAGS textures are flags */
 static string texfilenames[NUMTEXTURES+1]  =
 {
-	DATADIR "/finland.rgb",
-	DATADIR "/tux.rgb",
-	DATADIR "/cloudysky.rgb",
-	DATADIR "/island.rgb",
+	DATADIR "/finland.png",
+	DATADIR "/tux.png",
+	DATADIR "/cloudysky.png",
+	DATADIR "/island.png",
 	""
 };
 

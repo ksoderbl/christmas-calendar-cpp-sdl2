@@ -71,7 +71,7 @@ static int  object = 0;
 static texture_t *texture[NUMTEXTURES+1] = { 0, };
 static string texfilenames[NUMTEXTURES+1]  =
 {
-	DATADIR "/envgold.rgb",
+	DATADIR "/envgold.png",
 	""
 };
 

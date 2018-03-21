@@ -136,14 +136,14 @@ static GLenum q_texcoords   [] = { GL_TRUE     };
 static texture_t *texture[NUMTEXTURES+1] = { 0, };
 static string texfilenames[NUMTEXTURES+1]  =
 {
-	DATADIR "/earth.rgb",
-	DATADIR "/star1.rgb",
-	DATADIR "/star2.rgb",
-	DATADIR "/lens1.rgb",
-	DATADIR "/lens2.rgb",
-	DATADIR "/lens3.rgb",
-	DATADIR "/lens4.rgb",
-	DATADIR "/lens5.rgb",
+	DATADIR "/earth.png",
+	DATADIR "/star1.png",
+	DATADIR "/star2.png",
+	DATADIR "/lens1.png",
+	DATADIR "/lens2.png",
+	DATADIR "/lens3.png",
+	DATADIR "/lens4.png",
+	DATADIR "/lens5.png",
 	""
 };
 
