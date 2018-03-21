@@ -12,7 +12,7 @@ SOURCES = main.cpp calendar.cpp picking.cpp calendar_primitives.cpp effect.cpp \
 	  effect13.cpp effect14.cpp effect15.cpp effect16.cpp effect17.cpp effect18.cpp \
 	  effect19.cpp effect20.cpp effect21.cpp effect22.cpp effect23.cpp effect24.cpp \
 	  texture.cpp messages.cpp pause.cpp \
-	  stars.cpp vectormath.cpp util.cpp quit.cpp readtex.cpp
+	  stars.cpp vectormath.cpp util.cpp quit.cpp
 TARGET  = calendar
 OBJECTS = $(SOURCES:.cpp=.o)
 

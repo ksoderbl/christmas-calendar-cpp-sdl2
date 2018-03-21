@@ -6,7 +6,6 @@
 using std::string;
 
 #include <GL/gl.h>
-#include "readtex.h"
 
 typedef struct texture {
 	GLuint      tx_name;    /* texture name (from glGenTextures) */
@@ -16,8 +15,6 @@ typedef struct texture {
 	GLubyte    *tx_data;    /* image data */
 	string      tx_filename;/* */
 } texture_t;
-
-
 
 texture_t *tex_init(string filename);
 void tex_fmt_rgb_to_rgba(texture_t *tp, GLubyte alpha);
