@@ -143,7 +143,7 @@ int init_sdl(void)
 	val = SDL_GL_SetSwapInterval(1);
 	if (val < 0) {
 		cerr << "Synchronizing with vertical retrace failed: " << SDL_GetError() << endl;
-		exit(1);
+		//exit(1);
 	}
 	
 	return 0;
