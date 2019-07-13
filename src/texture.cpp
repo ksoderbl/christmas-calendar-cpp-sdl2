@@ -27,21 +27,21 @@ using std::string;
 
 // Based on https://gist.github.com/niw/5963798
 
-static GLubyte *LoadPNGImage(string imageFile,
+static GLubyte *LoadPNGImage(string* imageFile,
 			     GLint *width, GLint *height,
 			     GLenum *format)
 {
-	FILE *fp = fopen(imageFile.c_str(), "rb");
+	FILE *fp = fopen(imageFile->c_str(), "rb");
 
 	int w, h;
 	png_byte color_type;
 	png_byte bit_depth;
 	png_bytep *row_pointers;
 
-	cout << "Loading " << imageFile.c_str() << endl;
+	cout << "Loading " << imageFile->c_str() << endl;
 
 	if (!fp) {
-		cerr << "LoadPNGImage: fopen of " << imageFile.c_str() << " failed." << endl;
+		cerr << "LoadPNGImage: fopen of " << imageFile->c_str() << " failed." << endl;
 		return 0;
 	}
 
@@ -121,12 +121,12 @@ static GLubyte *LoadPNGImage(string imageFile,
 	return buffer;
 }
 
-texture_t *tex_init(string filename)
+texture_t *tex_init(string* filename)
 {
 	texture_t *p;
 	size_t size = sizeof(texture_t);
 
-	if (filename == "") {
+	if (*filename == "") {
 		cerr << "tex_init: no texture file name given\n";
 		return NULL;
 	}

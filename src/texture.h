@@ -13,10 +13,10 @@ typedef struct texture {
 	GLint       tx_h;       /* height in pixels */
 	GLenum      tx_fmt;     /* format: RGB or RGBA */
 	GLubyte    *tx_data;    /* image data */
-	string      tx_filename;/* */
+	string*     tx_filename;/* */
 } texture_t;
 
-texture_t *tex_init(string filename);
+texture_t *tex_init(string* filename);
 void tex_fmt_rgb_to_rgba(texture_t *tp, GLubyte alpha);
 void tex_free(texture_t *tp);
 void tex_use(texture_t *tp);

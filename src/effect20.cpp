@@ -646,7 +646,7 @@ static int init_textures(void)
 		if (texfilenames[i] == "")
 			continue;
 		
-		texture[i] = tex_init(texfilenames[i]);
+		texture[i] = tex_init(&texfilenames[i]);
 		tp = texture[i];
 		if (!tp) {
 		  cerr << "failed to load " << texture[i]->tx_filename << "\n";

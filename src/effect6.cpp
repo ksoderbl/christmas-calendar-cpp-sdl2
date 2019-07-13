@@ -792,7 +792,7 @@ int Effect6::init()
 		if (texfilenames[i] == "")
 			continue;
 		
-		textures[i] = tex_init(texfilenames[i]);
+		textures[i] = tex_init(&texfilenames[i]);
 		tex = textures[i];
 		if (!tex) {
 			cerr << "failed to load " << textures[i]->tx_filename << "\n";
